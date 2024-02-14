@@ -1,0 +1,95 @@
+{% extends 'base.html' %} {% block title %}
+-> Login
+{% endblock %}
+{% block content %}
+  {% load static %}
+
+  <div class="h-100 d-flex align-items-center justify-content-center" style="padding: 6%;">
+    <div class="row" style="">
+      <div class="col">
+        <img src="{% static 'cv_login_preview.png' %}" alt="My image" style="margin-top: 20px;margin-bottom:10px;max-height: 350px;" />
+      </div>
+      <div class="col">
+        <form id="get-cv-data" method="post">
+          <h4>Instantly Transform Your Profile into a Professional CV</h4>
+
+          {% csrf_token %}
+          <blockquote class="blockquote mb-0" style="margin-top: 20px;">
+            <div class="form-group">
+              <label for="cookie" class="label-text">Access Cookie</label>
+              <input type="text" class="form-control form-control-sm" id="cookie" name="cookie" placeholder="Enter Access Cookie" required />
+              <small id="cookie" class="form-text text-muted small">li_at cookie</small>
+            </div>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" name="username" class="form-control form-control-sm" id="username" placeholder="Enter Username" required />
+              <small id="username" class="form-text text-muted small">linkedin.com/in/{username}</small>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+              <button id="submit-button" type="submit" class="btn btn-page">
+                Revelio LinkedInium<svg style="margin-bottom: 8px;margin-left: 3px;" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
+                  <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z" />
+                </svg>
+                {% include 'props/loading_screen.html' %}
+              </button>
+            </div>
+
+            {% if Authorized != None %}
+              <footer style="margin-top: 10px;" class="blockquote-footer">
+                {% if Authorized == False %}
+                  {{ info }}
+                {% endif %}
+              </footer>
+            {% else %}
+              <footer style="margin-top: 10px;" class="blockquote-footer">Ah, this process may take a bit of time, akin to waiting for a potion to brew in the depths of Hogwarts' dungeons</footer>
+            {% endif %}
+          </blockquote>
+
+          <hr style="margin-top: 20px;margin-bottom: 7px;" />
+
+          <p>
+            Are you starting to use LinkedIn? <a href="https://www.linkedin.com/signup"><cite title="Source Title">Join now</cite></a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    body {
+      background: rgb(255, 255, 255);
+      background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(197, 211, 249, 1) 100%);
+    }
+    label {
+      font-size: 15px;
+    }
+    .small {
+      font-size: 14px;
+    }
+    .row > * {
+      flex-shrink: 0;
+      width: 100%;
+      max-width: 350px;
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+      margin-top: var(--bs-gutter-y);
+    }
+    .row {
+      --bs-gutter-x: 1.5rem;
+      --bs-gutter-y: 0;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: calc(-1 * var(--bs-gutter-y));
+      margin-right: calc(-0.5 * var(--bs-gutter-x));
+      margin-left: 10px;
+    }
+  </style>
+
+  <script>
+    $('#get-cv-data').on('submit', function () {
+      $('#loading-icon').css('display', 'flex')
+      $('#submit-button').prop('disabled', true)
+    })
+  </script>
+{% endblock %}

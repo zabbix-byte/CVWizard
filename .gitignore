@@ -1,0 +1,40 @@
+# byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# tests and coverage
+*.pytest_cache
+.coverage
+
+# database & logs
+*.db
+*.sqlite3
+*.log
+
+data/
+
+# venv
+env
+venv
+.env
+
+*.json
+
+# other
+.DS_Store
+
+# javascript
+package-lock.json
+*.xlsx
+
+staticfiles/*
+!staticfiles/.gitkeep 
+.vscode/symbols.json
+
+
+id_rsa.priv
+logs/reders_performance.logs
+ia/state_variables/*.csv
+logs/readers_performance.logs
+
+*.log
