@@ -3,153 +3,15 @@
 {% endblock %}
 {% block content %}
   {% load static %}
-  {% include 'props/nav_bar.html' %}
+  {% include 'props/nav_bar_main.html' %}
+
   <div class="container">
-    <div id="basic-information-box">
-      {% include 'home/basic_information.html' %}
+    <div id="your-resumes-box">
+      {% include 'home/your-resumes-box.html' %}
     </div>
 
-    <div id="education-box" style="display: none;">
-      {% include 'home/education.html' %}
-    </div>
-
-    <div id="experiences-box" style="display: none;">
-      {% include 'home/experiences.html' %}
-    </div>
-    <div id="licences-courses-box" style="display: none;">
-      {% include 'home/licences_courses.html' %}
-    </div>
-    <div id="projects-box" style="display: none;">
-      {% include 'home/projects.html' %}
+    <div id="configuration-box" style="display: none;">
+      {% include 'home/configuration.html' %}
     </div>
   </div>
-
-  <script>
-    $('#to-education').click(function () {
-      remove_links()
-      fadeOut(current_page)
-      current_page = '#education-box'
-      $('#education').addClass('active')
-      $(current_page).delay(800).fadeIn()
-    })
-    
-    $('#to-experiences').click(function () {
-      remove_links()
-      fadeOut(current_page)
-      current_page = '#experiences-box'
-      $('#experiences').addClass('active')
-      $(current_page).delay(800).fadeIn()
-    })
-    
-    $('#to-licences-courses').click(function () {
-      remove_links()
-      fadeOut(current_page)
-      current_page = '#licences-courses-box'
-      $('#licences-courses').addClass('active')
-      $(current_page).delay(800).fadeIn()
-    })
-    
-    $('#to-projects').click(function () {
-      remove_links()
-      fadeOut(current_page)
-      current_page = '#projects-box'
-      $('#projects').addClass('active')
-      $(current_page).delay(800).fadeIn()
-    })
-  </script>
-
-  <style>
-    .main-content {
-      max-height: 62vh;
-      overflow-y: auto;
-      max-width: 70%;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      margin-top: -50px;
-    }
-    
-    .image-home {
-      margin-top: 20px;
-      margin-bottom: 10px;
-      max-height: 450px;
-      bottom: 18%;
-      right: 15%;
-      position: absolute;
-      z-index: -1000;
-    }
-    
-    @media screen and (max-height: 2000px) {
-      .image-home {
-        bottom: 23%;
-        max-height: 400px;
-      }
-    }
-    
-    @media screen and (max-height: 1500px) {
-      .image-home {
-        bottom: 21%;
-        max-height: 350px;
-      }
-    }
-    
-    @media screen and (max-height: 1000px) {
-      .image-home {
-        bottom: 10%;
-        max-height: 300px;
-      }
-    }
-    
-    @media screen and (max-height: 800px) {
-      .image-home {
-        bottom: 0%;
-        max-height: 350;
-      }
-    }
-    
-    @media screen and (max-height: 568px) {
-      .image-home {
-        display: none; /* Hide the image on mobile screens */
-      }
-    }
-    
-    @media screen and (max-width: 2000px) {
-      .image-home {
-        right: 10%;
-      }
-    }
-    @media screen and (max-width: 1700px) {
-      .image-home {
-        right: 5%;
-      }
-    }
-    @media screen and (max-width: 1500px) {
-      .image-home {
-        right: 5%;
-      }
-    }
-    @media screen and (max-width: 1200px) {
-      .image-home {
-        right: 0%;
-      }
-    }
-    
-    @media screen and (max-width: 1000px) {
-      .image-home {
-        right: 0;
-      }
-    }
-    
-    @media screen and (max-width: 700px) {
-      .image-home {
-        display: none; /* Hide the image on mobile screens */
-      }
-      .main-content {
-        margin-top: 0px;
-        overflow-y:auto;
-        max-width: 100%;
-        max-height: 50%;
-        margin-bottom: 10px;
-      }
-    }
-  </style>
 {% endblock %}

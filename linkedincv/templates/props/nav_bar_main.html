@@ -10,26 +10,17 @@
     <ul class="navbar-nav ml-auto">
       <!-- Left side -->
       <li class="nav-item active">
-        <a class="nav-link active" id="basic-information" href="#">Basic Information</a>
+        <a class="nav-link active" id="your-resumes" href="#">Your CVs</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="education" href="#">Education</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="experiences" href="#">Experiences</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="licences-courses" href="#">Licences/Courses</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link"id="projects"  href="#">Projects</a>
+        <a class="nav-link" id="configuration" href="#">Configuration</a>
       </li>
     </ul>
 
     <ul class="navbar-nav ms-auto">
       <!-- Left side -->
       <li class="nav-item active">
-        <button class="btn btn-page" href="#">Export</button>
+        <a class="btn btn-page" href="/auth/logout/">Exit</a>
       </li>
     </ul>
   </div>
@@ -37,57 +28,29 @@
 
 <script>
 
-  var current_page = '#basic-information-box'
+  var current_page = '#your-resumes-box'
   function remove_links() {
-    $("#basic-information").removeClass("active");
-    $("#education").removeClass("active");
-    $("#experiences").removeClass("active");
-    $("#licences-courses").removeClass("active");
-    $("#projects").removeClass("active");
+    $("#your-resumes").removeClass("active");
+    $("#configuration").removeClass("active");
   };
 
   function fadeOut(current_page) {
     $(current_page).fadeOut();
   };
 
-  $("#basic-information").click(function(){
+  $("#your-resumes").click(function(){
     remove_links();
     fadeOut(current_page)
-    current_page = "#basic-information-box"
-    $("#basic-information").addClass("active");
+    current_page = "#your-resumes-box"
+    $("#your-resumes").addClass("active");
     $(current_page).delay(800).fadeIn();
   });
 
-  $("#education").click(function(){
+  $("#configuration").click(function(){
     remove_links();
     fadeOut(current_page)
-    current_page = "#education-box"
-    $("#education").addClass("active");
-    $(current_page).delay(800).fadeIn();
-  });
-
-  $("#experiences").click(function(){
-    remove_links();
-    fadeOut(current_page)
-    current_page = "#experiences-box"
-    $("#experiences").css("display", "block");
-    $(current_page).delay(800).fadeIn();
-  });
-
-
-  $("#licences-courses").click(function(){
-    remove_links();
-    fadeOut(current_page)
-    current_page = "#licences-courses-box"
-    $("#licences-courses").addClass("active");
-    $(current_page).delay(800).fadeIn();
-  });
-
-  $("#projects").click(function(){
-    remove_links();
-    fadeOut(current_page)
-    current_page = "#projects-box"
-    $("#projects").addClass("active");
+    current_page = "#configuration-box"
+    $("#configuration").addClass("active");
     $(current_page).delay(800).fadeIn();
   });
 </script>

@@ -2,7 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.service import Service
 from scraper.Domain import Profile
-from scraper.Domain import License, Experience
+from scraper.Domain import License, Experience, Education
 from scraper.models import UserProfileHtml
 import time
 import re
@@ -196,6 +196,46 @@ class Linkedin:
         return profile
 
     @staticmethod
+    def get_education(html: str, profile: Profile) -> Profile:
+        soup = BeautifulSoup(html, 'lxml')
+
+        try:
+            list_off_education = soup.find(
+                'ul',
+                {'class': 'pvs-list'}
+            ).find_all('li', {'class', 'pvs-list__paged-list-item artdeco-list__item pvs-list__item--line-separated pvs-list__item--one-column'})
+        except:
+            profile.education = []
+
+        for i in list_off_education:
+            try:
+                name = i.find(
+                    'div',
+                    {'class': 'display-flex align-items-center mr1 hoverable-link-text t-bold'}
+                ).find('span').get_text().strip()
+            except:
+                continue
+
+            try:
+                entity = i.find(
+                    'span',
+                    {'class': 't-14 t-normal'}
+                ).find('span').get_text().strip()
+            except:
+                entity = ''
+
+            try:
+                time = i.find(
+                    'span',
+                    {'class': 't-14 t-normal t-black--light'}
+                ).find('span').get_text().strip()
+            except:
+                time = ''
+
+            profile.education.append(Education(name=name, entity=entity, time=time))
+        return profile
+
+    @staticmethod
     def get_profile_data(username: str, cookie: str) -> bool:
         service = Service(executable_path=r'/usr/local/bin/chromedriver')
         options = webdriver.ChromeOptions()
@@ -238,6 +278,10 @@ class Linkedin:
         Linkedin.scroll(driver)
         profile = Linkedin.get_experience(driver.page_source, profile)
 
+        driver.get(f'https://www.linkedin.com/in/{username}/details/education/')
+        time.sleep(2)
+        Linkedin.scroll(driver)
+        profile = Linkedin.get_education(driver.page_source, profile)
         driver.close()
 
         profile = profile.serrialize()
