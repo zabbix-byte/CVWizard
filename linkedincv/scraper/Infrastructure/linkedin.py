@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from scraper.Domain import Profile
 from scraper.Domain import License, Experience, Education
 from scraper.models import UserProfileHtml
+from django.contrib.auth.models import User
 import time
 import re
 
@@ -236,7 +237,7 @@ class Linkedin:
         return profile
 
     @staticmethod
-    def get_profile_data(username: str, cookie: str) -> bool:
+    def get_profile_data(username: str, cookie: str, user: User) -> bool:
         service = Service(executable_path=r'/usr/local/bin/chromedriver')
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
@@ -287,15 +288,15 @@ class Linkedin:
         profile = profile.serrialize()
         try:
             user = UserProfileHtml.objects.get(
-                cookie=cookie,
+                target=username,
+                user=user
             )
-            user.user = username
             user.data = profile
             user.save()
         except UserProfileHtml.DoesNotExist:
             user = UserProfileHtml(
-                cookie=cookie,
-                user=username,
+                target=username,
+                user=user,
                 data=profile
             )
             user.save()
