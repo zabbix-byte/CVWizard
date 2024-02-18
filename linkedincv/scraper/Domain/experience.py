@@ -10,4 +10,6 @@ class Experience:
 
     def serrialize_groups(self):
         for i in range(len(self.group)):
+            if type(self.group[i]) == dict:
+                continue
             self.group[i] = self.group[i].__dict__

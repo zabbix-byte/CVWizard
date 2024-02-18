@@ -11,6 +11,8 @@ class UserProfileHtml(models.Model):
 class UserCookie(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cookie = models.TextField(unique=True, max_length=500)
+    default_username = models.CharField(max_length=255)
+    access_agree = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.user.username}::{self.cookie}'

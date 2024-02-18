@@ -37,16 +37,24 @@ class Profile:
 
     def serrialize(self):
         for i in range(len(self.licences)):
+            if type(self.licences[i]) == dict:
+                continue
             self.licences[i] = self.licences[i].__dict__
 
         for i in range(len(self.experiences)):
+            if type(self.experiences[i]) == dict:
+                continue
             self.experiences[i].serrialize_groups()
             self.experiences[i] = self.experiences[i].__dict__
 
         for i in range(len(self.projects)):
+            if type(self.projects[i]) == dict:
+                continue
             self.projects[i] = self.projects[i].__dict__
 
         for i in range(len(self.education)):
+            if type(self.education[i]) == dict:
+                continue
             self.education[i] = self.education[i].__dict__
 
         return self.__dict__

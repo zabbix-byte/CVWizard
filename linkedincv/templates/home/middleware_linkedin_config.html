@@ -4,8 +4,11 @@
         <div class="modal-header">
           <h5 class="modal-title" id="middleware-linkedinLabel">Set up LinkedIn access</h5>
         </div>
-        <form>
+        <form id="setup-linkedin-access">
             <div class="modal-body">
+
+                <div id="some-error-in-setup-linkedin-access" style="display: none;" class="alert alert-warning" role="alert">
+                </div>
                 
                 <div class="form-group">
                     <label for="username">Username</label>
@@ -36,15 +39,15 @@
 
                 <div class="form-group" style="margin-top: 10px">
                     <input type="checkbox" class="form-check-input" id="agree-conn" required>
-                    <label class="form-check-label" for="agree-conn">I agree to connect my LinkedIn account through this platform.</label>
+                    <label class="form-check-label" for="agree-conn"><strong>I agree to connect my LinkedIn account through this platform.</strong></label>
                 </div>
 
                 <br/>
                 
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-page" data-dismiss="modal">Later</button>
-            <button type="submit" class="btn btn-page">Save changes</button>
+            <button type="button" id="later-submit" class="btn btn-page" data-dismiss="modal">Later</button>
+            <button type="submit" id="setup-linkedin-access-submit" class="btn btn-page">Save changes {% include 'props/loading_screen.html' %}</button>
             </div>
         </form>
       </div>
@@ -54,8 +57,68 @@
 
 <script>
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 $(document).ready(function() {
  $('#middleware-linkedin').modal('show'); 
+});
+
+function handle_setup_linkedin_access(event, success)
+{
+    if (success.error)
+    {
+        $("#some-error-in-setup-linkedin-access").append(success['error']);
+        $("#some-error-in-setup-linkedin-access").css('display', 'flex');
+
+        $('#loading-icon').css('display', 'none')
+        $('#setup-linkedin-access-submit').prop('disabled', false)
+        $('#later-submit').prop('disabled', false)
+    } 
+    
+    if (success.ok) {
+        window.location.href = "/";
+    }
+}
+
+$("#setup-linkedin-access").on("submit", function( event ) {
+
+    $('#loading-icon').css('display', 'flex')
+    $('#setup-linkedin-access-submit').prop('disabled', true)
+    $('#later-submit').prop('disabled', true)
+    
+    let username = $("#username").val();
+    let token = $("#auth-token").val();
+
+    response = fetch(`/setup_linkedin_access`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            "X-CSRFToken": getCookie("csrftoken")
+
+        },
+        body: JSON.stringify({
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            username: username,
+            li_token: token
+        })
+    }).then(resp => resp.json()).then(success =>  handle_setup_linkedin_access(event, success));
+
+    return false;
 });
 
 </script>

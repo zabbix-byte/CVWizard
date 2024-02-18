@@ -237,7 +237,7 @@ class Linkedin:
         return profile
 
     @staticmethod
-    def get_profile_data(username: str, cookie: str, user: User) -> bool:
+    def get_profile_data(username: str, cookie: str, user: User, only_check: bool = False) -> bool:
         service = Service(executable_path=r'/usr/local/bin/chromedriver')
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
@@ -257,12 +257,15 @@ class Linkedin:
         time.sleep(2)
 
         if len(driver.page_source) == 39:
-            return False, "Ah, it appears there's a slight hiccup with your cookie!"
+            return False, "Ah, it appears there's a slight hiccup with your Token!"
 
         time.sleep(1)
 
         if '404' in driver.current_url:
             return False, "By the four Founders! No user hath been unearthed with this username from the depths of our magical archives!"
+
+        if only_check:
+            return True
 
         profile = Linkedin.get_general_info(driver.page_source)
         driver.get(f'https://www.linkedin.com/in/{username}/overlay/contact-info/')
