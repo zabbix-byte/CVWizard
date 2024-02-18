@@ -1,11 +1,15 @@
 {% extends 'base.html' %} {% block title %}
-  -> Configuration
+  -> Home
 {% endblock %}
 {% block content %}
   {% load static %}
   {% include 'props/nav_bar_main.html' %}
 
   <div class="container">
+    {% if cookie_exists == False %}
+    {% include 'home/middleware_linkedin_config.html' %}
+    {% endif %}
+
     <div id="your-resumes-box">
       {% include 'home/your-resumes-box.html' %}
     </div>
