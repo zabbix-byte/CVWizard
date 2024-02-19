@@ -7,4 +7,5 @@ urlpatterns = [
     path('cv', new_extraction),
     path('', index),
     path('setup_linkedin_access', setup_linkedin_access),
+    path('update_linkedin_access', md_linkedin),
 ]

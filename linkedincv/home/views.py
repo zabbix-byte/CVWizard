@@ -20,13 +20,43 @@ def new_extraction(request):
 
 
 @login_required(login_url='/auth/signin')
+def md_linkedin(request):
+    li_at = request.GET.get('li_at')
+    validate = Linkedin.get_profile_data(
+        None,
+        li_at,
+        request.user,
+        True,
+        True
+    )
+
+    if type(validate) == bool:
+        if validate:
+            try:
+                user_cookie = UserCookie.objects.get(user=request.user)
+                user_cookie.cookie = li_at
+                user_cookie.save()
+            except UserCookie.DoesNotExist:
+                user_cookie = UserCookie(
+                    user=request.user,
+                    cookie=li_at,
+                    default_username='default'
+                )
+                user_cookie.save()
+
+            return redirect('/')
+    else:
+        return redirect('https://www.linkedin.com/login')
+
+
+@login_required(login_url='/auth/signin')
 def index(request):
     cv_exists = False
 
     try:
         cookie = UserCookie.objects.get(user=request.user)
 
-        validate = Linkedin.get_profile_data(cookie.default_username, cookie.cookie, request.user, True)
+        validate = Linkedin.get_profile_data(cookie.default_username, cookie.cookie, request.user, True, True)
 
         if type(validate) == bool:
             if validate:

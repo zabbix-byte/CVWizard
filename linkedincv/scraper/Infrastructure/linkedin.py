@@ -237,7 +237,7 @@ class Linkedin:
         return profile
 
     @staticmethod
-    def get_profile_data(username: str, cookie: str, user: User, only_check: bool = False) -> bool:
+    def get_profile_data(username: str, cookie: str, user: User, only_check: bool = False, just_li: bool = False) -> bool:
         service = Service(executable_path=r'/usr/local/bin/chromedriver')
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
@@ -252,12 +252,15 @@ class Linkedin:
 
         Linkedin.login_with_cookie(driver, cookie)
 
-        time.sleep(2)
+        time.sleep(1)
         driver.get(f'https://www.linkedin.com/in/{username}/')
-        time.sleep(2)
+        time.sleep(1)
 
         if len(driver.page_source) == 39:
             return False, "Ah, it appears there's a slight hiccup with your Token!"
+
+        if just_li:
+            return True
 
         time.sleep(1)
 
