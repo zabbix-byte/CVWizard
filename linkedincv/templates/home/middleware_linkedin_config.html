@@ -6,119 +6,20 @@
         </div>
         <form id="setup-linkedin-access">
             <div class="modal-body">
-
-                <div id="some-error-in-setup-linkedin-access" style="display: none;" class="alert alert-warning" role="alert">
-                </div>
-                
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" class="form-control form-control-sm" id="username" placeholder="linkedin.com/in/{username}/" required />
-                    <small id="emailHelp" class="form-text text-muted">This serves as the default username for data extraction to generate the CV.</small>
-                </div>
-                <div class="form-group" style="margin-top: 10px">
-                    <label for="auth-token" class="label-text">Auth Li Token</label>
-                    <input type="text" class="form-control form-control-sm" id="auth-token" name="password" placeholder="LinkedIn li_at Token" required />
-                    <small id="emailHelp" class="form-text text-muted">This token grants access to your account, enabling retrieval of profile information.</small>
-                </div>
-                <br/>
-               
-
                 <h6>
-                    <strong>Note</strong>: We'll only use this information to pull data from your LinkedIn account for CV creation. Our aim is to <strong>save you the work of filling out the details yourself</strong>, which is why we're requesting access to LinkedIn in this way.
+                    <strong>Note:</strong> The connection won't be permanent; if you log out of LinkedIn, this token will be deleted and become invalid. It's not mandatory to connect to the platform; it's only required when LinkedIn data is needed to generate a new CV. Connecting isn't necessary for exporting or modify an existing CV.
                 </h6>
-                
-                <h6>
-                    <strong>-</strong> We look forward to improving and streamlining this aspect in the future!
-                </h6>
-
-                <h6>
-                    <strong>-</strong> The connection won't be permanent; if you log out of LinkedIn, this token will be deleted and become invalid. It's not mandatory to connect to the platform; it's only required when LinkedIn data is needed to generate a new CV. Connecting isn't necessary for exporting or modify an existing CV.
-                </h6>
-
-                <br/>
-
-                <div class="form-group" style="margin-top: 10px">
-                    <input type="checkbox" class="form-check-input" id="agree-conn" required>
-                    <label class="form-check-label" for="agree-conn"><strong>I agree to connect my LinkedIn account through this platform.</strong></label>
-                </div>
-
-                <br/>
-                
             </div>
             <div class="modal-footer">
             <button type="button" id="later-submit" class="btn btn-page" data-dismiss="modal">Later</button>
-            <button type="submit" id="setup-linkedin-access-submit" class="btn btn-page">Save changes {% include 'props/loading_screen.html' %}</button>
             </div>
         </form>
       </div>
-   
     </div>
-  </div>
+</div>
 
 <script>
-
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
 $(document).ready(function() {
  $('#middleware-linkedin').modal('show'); 
 });
-
-function handle_setup_linkedin_access(event, success)
-{
-    if (success.error)
-    {
-        $("#some-error-in-setup-linkedin-access").append(success['error']);
-        $("#some-error-in-setup-linkedin-access").css('display', 'flex');
-
-        $('#loading-icon').css('display', 'none')
-        $('#setup-linkedin-access-submit').prop('disabled', false)
-        $('#later-submit').prop('disabled', false)
-    } 
-    
-    if (success.ok) {
-        window.location.href = "/";
-    }
-}
-
-$("#setup-linkedin-access").on("submit", function( event ) {
-
-    $('#loading-icon').css('display', 'flex')
-    $('#setup-linkedin-access-submit').prop('disabled', true)
-    $('#later-submit').prop('disabled', true)
-    
-    let username = $("#username").val();
-    let token = $("#auth-token").val();
-
-    response = fetch(`/setup_linkedin_access`, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-            "X-CSRFToken": getCookie("csrftoken")
-
-        },
-        body: JSON.stringify({
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            username: username,
-            li_token: token
-        })
-    }).then(resp => resp.json()).then(success =>  handle_setup_linkedin_access(event, success));
-
-    return false;
-});
-
 </script>

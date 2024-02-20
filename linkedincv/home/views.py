@@ -10,12 +10,31 @@ from django.http import JsonResponse
 
 
 @login_required(login_url='/auth/signin')
+def loading_bridge(request):
+    to = request.GET.get('to')
+    message = 'Loading, please wait...'
+
+    if 'update_linkedin_access' in to:
+        message = 'Verifying connection with LinkedIn...'
+    
+    if 'new_cv' in to:
+        message = 'Verifying connection and retrieving data from LinkedIn...'
+
+    return render(request, 'props/loading_fullscreen.html', {'to': to, 'message': message})
+
+
+@login_required(login_url='/auth/signin')
 def new_extraction(request):
     cookie = UserCookie.objects.get(user=request.user)
-    Linkedin.get_profile_data(cookie.default_username, cookie.cookie, request.user, False)
+    validate = Linkedin.get_profile_data(cookie.default_username, cookie.cookie, request.user, False)
+
+    if type(validate) == tuple:
+        if not validate[0]:
+            UserCookie.objects.filter(user=request.user).delete()
+            return redirect('/')
+
     user = UserProfileHtml.objects.get(user=request.user, target=cookie.default_username)
     data = user.data
-
     return render(request, 'generate_cv/home.html', {'data': data})
 
 
@@ -52,22 +71,11 @@ def md_linkedin(request):
 @login_required(login_url='/auth/signin')
 def index(request):
     cv_exists = False
-
+    cookie_exists = True
     try:
-        cookie = UserCookie.objects.get(user=request.user)
-
-        validate = Linkedin.get_profile_data(cookie.default_username, cookie.cookie, request.user, True, True)
-
-        if type(validate) == bool:
-            if validate:
-                cookie_exists = True
-        elif type(validate) == tuple:
-            if not validate[0]:
-                cookie_exists = False
-
+        UserCookie.objects.get(user=request.user)
     except UserCookie.DoesNotExist:
         cookie_exists = False
-
     return render(request, 'home/home.html', {'cv_exists': cv_exists, 'cookie_exists': cookie_exists})
 
 
