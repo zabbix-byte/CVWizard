@@ -1,12 +1,9 @@
-import json
-
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from scraper.models import UserProfileHtml, UserCookie
 from scraper.Infrastructure import Linkedin
 from scraper.models import UserCookie
-from django.http import JsonResponse
 
 from scraper.check_if_cookie import check_if_cookie
 
@@ -20,7 +17,7 @@ def loading_bridge(request):
         message = 'Verifying connection with LinkedIn...'
 
     if 'new_cv' in to:
-        message = 'Verifying connection and retrieving data from LinkedIn...'
+        message = 'Ensuring connection and fetching data from LinkedIn. This process may take a moment...'
 
     return render(request, 'props/loading_fullscreen.html', {'to': to, 'message': message})
 
@@ -31,7 +28,7 @@ def new_extraction(request):
     if cookie == None:
         return redirect('/')
     
-    user = UserProfileHtml.objects.get(user=request.user, target=cookie.default_username)
+    user = UserProfileHtml.objects.get(user=request.user)
     data = user.data
     return render(request, 'generate_cv/home.html', {'data': data})
 
@@ -40,7 +37,6 @@ def new_extraction(request):
 def md_linkedin(request):
     li_at = request.GET.get('li_at')
     validate = Linkedin.get_profile_data(
-        None,
         li_at,
         request.user,
         True,
@@ -56,8 +52,7 @@ def md_linkedin(request):
             except UserCookie.DoesNotExist:
                 user_cookie = UserCookie(
                     user=request.user,
-                    cookie=li_at,
-                    default_username='default'
+                    cookie=li_at
                 )
                 user_cookie.save()
 
@@ -73,35 +68,3 @@ def index(request):
     except UserCookie.DoesNotExist:
         cookie_exists = False
     return render(request, 'home/home.html', {'cv_exists': cv_exists, 'cookie_exists': cookie_exists})
-
-
-@login_required(login_url='/auth/signin')
-def setup_linkedin_access(request):
-    if request.body:
-        body = json.loads(request.body)
-        username = body['username']
-        li_token = body['li_token']
-
-        validate = Linkedin.get_profile_data(username, li_token, request.user, True)
-
-        if type(validate) == bool:
-            if validate:
-                try:
-                    user_cookie = UserCookie.objects.get(user=request.user)
-                    user_cookie.cookie = li_token
-                    user_cookie.default_username = username
-                    user_cookie.save()
-                except UserCookie.DoesNotExist:
-                    user_cookie = UserCookie(
-                        user=request.user,
-                        cookie=li_token,
-                        default_username=username
-                    )
-                    user_cookie.save()
-
-                return JsonResponse({'ok': True})
-        elif type(validate) == tuple:
-            if not validate[0]:
-                return JsonResponse({'error': validate[1]})
-
-    return JsonResponse({'error': 'Only POST'})

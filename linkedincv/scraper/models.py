@@ -3,15 +3,13 @@ from django.contrib.auth.models import User
 
 
 class UserProfileHtml(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    target = models.CharField(max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     data = models.JSONField()
 
 
 class UserCookie(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cookie = models.TextField(unique=True, max_length=500)
-    default_username = models.CharField(max_length=255)
     access_agree = models.BooleanField(default=True)
 
     def __str__(self):

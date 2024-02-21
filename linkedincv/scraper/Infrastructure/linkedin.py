@@ -5,6 +5,9 @@ from scraper.Domain import Profile
 from scraper.Domain import License, Experience, Education
 from scraper.models import UserProfileHtml
 from django.contrib.auth.models import User
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 import re
 
@@ -20,7 +23,7 @@ class Linkedin:
         while True:
             driver.execute_script(f"window.scrollTo({initialScroll},{finalScroll})")
             finalScroll += 1000
-            time.sleep(1)
+            time.sleep(0.1)
             end = time.time()
             if round(end - start) > 20:
                 break
@@ -237,7 +240,7 @@ class Linkedin:
         return profile
 
     @staticmethod
-    def get_profile_data(username: str, cookie: str, user: User, only_check: bool = False, just_li: bool = False) -> bool:
+    def get_profile_data(cookie: str, user: User, only_check: bool = False, just_li: bool = False) -> bool:
         service = Service(executable_path=r'/usr/local/bin/chromedriver')
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
@@ -252,17 +255,33 @@ class Linkedin:
 
         Linkedin.login_with_cookie(driver, cookie)
 
-        time.sleep(1)
-        driver.get(f'https://www.linkedin.com/in/{username}/')
-        time.sleep(1)
+        print(f'[Extracting] info cookie: {cookie} with user {user.username}')
+
+        driver.get(f'https://www.linkedin.com/feed/')
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
 
         if len(driver.page_source) == 39:
             return False, "Ah, it appears there's a slight hiccup with your Token!"
 
+        username = BeautifulSoup(driver.page_source, 'lxml').find(
+            'div', {'class', 'feed-identity-module__actor-meta break-words'}).find('a', href=True)['href'].replace('/in/', '')[0:-1]
+
+        print(f'[Extracting] LinkedIn username: {username}')
+
+        driver.get(f'https://www.linkedin.com/in/{username}/')
+
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
+
         if just_li:
             return True
 
-        time.sleep(1)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
 
         if '404' in driver.current_url:
             return False, "By the four Founders! No user hath been unearthed with this username from the depths of our magical archives!"
@@ -271,37 +290,57 @@ class Linkedin:
             return True
 
         profile = Linkedin.get_general_info(driver.page_source)
+
+        print(f'[Extracting::{username}] General info loaded')
+
         driver.get(f'https://www.linkedin.com/in/{username}/overlay/contact-info/')
-        time.sleep(2)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
         profile = Linkedin.get_contact_info(driver.page_source, profile)
 
+        print(f'[Extracting::{username}] General contact info loaded')
+
         driver.get(f'https://www.linkedin.com/in/{username}/details/certifications/')
-        time.sleep(2)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
         Linkedin.scroll(driver)
         profile = Linkedin.get_certifications(driver.page_source, profile)
 
+        print(f'[Extracting::{username}] General certifications info loaded')
+
         driver.get(f'https://www.linkedin.com/in/{username}/details/experience/')
-        time.sleep(2)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
         Linkedin.scroll(driver)
         profile = Linkedin.get_experience(driver.page_source, profile)
 
+        print(f'[Extracting::{username}] General experience info loaded')
+
         driver.get(f'https://www.linkedin.com/in/{username}/details/education/')
-        time.sleep(2)
+
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
+
         Linkedin.scroll(driver)
         profile = Linkedin.get_education(driver.page_source, profile)
+
+        print(f'[Extracting::{username}] General education info loaded')
+
         driver.close()
 
         profile = profile.serrialize()
         try:
             user = UserProfileHtml.objects.get(
-                target=username,
                 user=user
             )
             user.data = profile
             user.save()
         except UserProfileHtml.DoesNotExist:
             user = UserProfileHtml(
-                target=username,
                 user=user,
                 data=profile
             )
