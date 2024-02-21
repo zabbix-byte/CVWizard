@@ -5,6 +5,7 @@ from scraper.Infrastructure import Linkedin
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from scraper.check_if_cookie import check_if_cookie
 
 
 def get_perfil_data(request):
@@ -32,6 +33,7 @@ def signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            check_if_cookie(user, True, True)
             return redirect('/')
         else:
             return render(request, 'auth/login.html', {'Authorized': False, 'info': 'Mystical access denied'})
@@ -71,6 +73,7 @@ def signup(request):
 
         if user is not None:
             login(request, user)
+            check_if_cookie(user, True, True)
             return redirect('/')
 
     return render(request, 'auth/register.html', {'Authorized': None})

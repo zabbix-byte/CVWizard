@@ -8,6 +8,8 @@ from scraper.Infrastructure import Linkedin
 from scraper.models import UserCookie
 from django.http import JsonResponse
 
+from scraper.check_if_cookie import check_if_cookie
+
 
 @login_required(login_url='/auth/signin')
 def loading_bridge(request):
@@ -16,7 +18,7 @@ def loading_bridge(request):
 
     if 'update_linkedin_access' in to:
         message = 'Verifying connection with LinkedIn...'
-    
+
     if 'new_cv' in to:
         message = 'Verifying connection and retrieving data from LinkedIn...'
 
@@ -25,14 +27,10 @@ def loading_bridge(request):
 
 @login_required(login_url='/auth/signin')
 def new_extraction(request):
-    cookie = UserCookie.objects.get(user=request.user)
-    validate = Linkedin.get_profile_data(cookie.default_username, cookie.cookie, request.user, False)
-
-    if type(validate) == tuple:
-        if not validate[0]:
-            UserCookie.objects.filter(user=request.user).delete()
-            return redirect('/')
-
+    cookie = check_if_cookie(request.user)
+    if cookie == None:
+        return redirect('/')
+    
     user = UserProfileHtml.objects.get(user=request.user, target=cookie.default_username)
     data = user.data
     return render(request, 'generate_cv/home.html', {'data': data})
@@ -63,9 +61,7 @@ def md_linkedin(request):
                 )
                 user_cookie.save()
 
-            return redirect('/')
-    else:
-        return redirect('https://www.linkedin.com/login')
+    return redirect('/')
 
 
 @login_required(login_url='/auth/signin')
