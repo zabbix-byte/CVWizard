@@ -70,8 +70,20 @@ def md_linkedin(request):
 def index(request):
     cv_exists = False
     cookie_exists = True
+    exists_profile = False
+    last_modified = None
     try:
         UserCookie.objects.get(user=request.user)
     except UserCookie.DoesNotExist:
         cookie_exists = False
-    return render(request, 'home/home.html', {'cv_exists': cv_exists, 'cookie_exists': cookie_exists})
+
+    profile_data = list(UserProfileHtml.objects.filter(user=request.user).values())
+
+    if len(profile_data) == 1:
+        last_modified = profile_data[0]['last_modified']
+        exists_profile = True
+
+    return render(request, 'home/home.html', {'cv_exists': cv_exists,
+                                              'cookie_exists': cookie_exists,
+                                              'exists_profile': exists_profile,
+                                              'last_modified': last_modified})
