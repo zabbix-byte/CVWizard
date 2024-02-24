@@ -17,16 +17,16 @@
       <div class="card-body">
         <h5 class="card-title">You</h5>
         <div class="form-group">
-          <label for="formGroupExampleInput">Full name</label>
-          <input type="text" class="form-control" id="formGroupExampleInput" value="{{ data.name }}" placeholder="" />
+          <label for="data-name">Full name</label>
+          <input type="text" class="form-control" id="data-name" value="{{ data.name }}" placeholder="" />
         </div>
         <div class="form-group">
-          <label for="formGroupExampleInput2">Title</label>
-          <input type="text" class="form-control" id="formGroupExampleInput2" value="{{ data.title }}" placeholder="" />
+          <label for="data-title">Title</label>
+          <input type="text" class="form-control" id="data-title" value="{{ data.title }}" placeholder="" />
         </div>
         <div class="form-group">
-          <label for="formGroupExampleInput2">Description</label>
-          <textarea type="text" class="form-control" id="formGroupExampleInput2" style="height: 150px;" placeholder="" />{{ data.description }}</textarea>
+          <label for="data-description">Description</label>
+          <textarea type="text" class="form-control" id="data-description" style="height: 150px;" placeholder="" />{{ data.description }}</textarea>
         </div>
       </div>
     </div>
@@ -36,20 +36,20 @@
       <div class="card-body">
         <h5 class="card-title">Contact</h5>
         <div class="form-group">
-          <label for="formGroupExampleInput2">Email</label>
-          <input type="email" class="form-control" id="formGroupExampleInput2" value="{{ data.email }}" placeholder="" />
+          <label for="data-email">Email</label>
+          <input type="email" class="form-control" id="data-email" value="{{ data.email }}" placeholder="" />
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput">Location</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" value="{{ data.location }}" placeholder="" />
+            <label for="data-location">Location</label>
+            <input type="text" class="form-control" id="data-location" value="{{ data.location }}" placeholder="" />
           </div>
           <div class="form-group">
-            <label for="formGroupExampleInput2">Web page</label>
-            <input type="text" class="form-control" id="formGroupExampleInput2" value="{{ data.web_page }}" placeholder="" />
+            <label for="data-web_page">Web page</label>
+            <input type="text" class="form-control" id="data-web_page" value="{{ data.web_page }}" placeholder="" />
           </div>
           <div class="form-group">
-            <label for="formGroupExampleInput2">Phone Number</label>
-            <input type="text" class="form-control" id="formGroupExampleInput2" value="{{ data.phone_number }}" placeholder="" />
+            <label for="data-phone_number">Phone Number</label>
+            <input type="text" class="form-control" id="data-phone_number" value="{{ data.phone_number }}" placeholder="" />
           </div>
         </div>
       </div>
@@ -57,7 +57,29 @@
 </div>
 </div>
 
-
+<script>
+  $('#data-name').focusout(function() {
+    map_basic_information['name'] = $(this).val();
+  });
+  $('#data-title').focusout(function() {
+    map_basic_information['title'] = $(this).val();
+  });
+  $('#data-description').focusout(function() {
+    map_basic_information['description'] = $(this).val();
+  });
+  $('#data-email').focusout(function() {
+    map_basic_information['email'] = $(this).val();
+  });
+  $('#data-location').focusout(function() {
+    map_basic_information['location'] = $(this).val();
+  });
+  $('#data-web_page').focusout(function() {
+    map_basic_information['web_page'] = $(this).val();
+  });
+  $('#data-phone_number').focusout(function() {
+    map_basic_information['phone_number'] = $(this).val();
+  });
+</script>
 
 <style>
 .card {

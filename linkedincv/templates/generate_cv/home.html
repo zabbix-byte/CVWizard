@@ -25,6 +25,17 @@
   </div>
 
   <script>
+    var map_basic_information = {
+      name: '{{ data.name }}',
+      title: '{{ data.title }}',
+      description: '{{ data.description }}',
+      email: '{{ data.email }}',
+      location: '{{ data.location }}',
+      web_page: '{{ data.web_page }}',
+      phone_number: '{{ data.phone_number }}'
+    }
+  </script>
+  <script>
     $('#to-education').click(function () {
       remove_links()
       fadeOut(current_page)
@@ -145,7 +156,7 @@
       }
       .main-content {
         margin-top: 0px;
-        overflow-y:auto;
+        overflow-y: auto;
         max-width: 100%;
         max-height: 50%;
         margin-bottom: 10px;
