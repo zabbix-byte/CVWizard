@@ -12,7 +12,17 @@
   <img src="{% static 'courses.png' %}" alt="My image" class="image-home" />
 </div>
 <div class="main-content">
-  <div style="row" style="margin-top: 50px;"></div>
+  <div style="row" style="margin-top: 50px;">
+    {% for i in data.licences %}
+      <div class="card border-dark mb-3" style="max-width: 50vh;">
+        <div class="card-header" contenteditable="true">{{ i.expedition }}</div>
+        <div class="card-body text-dark">
+          <h5 class="card-title" contenteditable="true">{{ i.name }}</h5>
+          <p class="card-text" contenteditable="true">{{ i.emitted_by }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 </div>
 <div>
   <script></script>

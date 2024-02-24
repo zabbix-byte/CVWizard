@@ -12,7 +12,34 @@
   <img src="{% static 'work.png' %}" alt="My image" class="image-home" />
 </div>
 <div class="main-content">
-  <div style="row" style="margin-top: 50px;"></div>
+  <div style="row" style="margin-top: 50px;">
+    {% for i in data.experiences %}
+      {% if i.group|length > 1 %}
+        <div class="card border-dark mb-3" style="max-width: 50vh;">
+          <div class="card-header" contenteditable="true">{{ i.name }}</div>
+          <div class="card-body text-dark">
+            {% for j in i.group %}
+              <div class="card border-dark mb-3" style="max-width: 50vh;">
+                <div class="card-header" contenteditable="true">{{ j.time }}</div>
+                <div class="card-body text-dark">
+                  <h5 class="card-title" contenteditable="true">{{ j.name }}</h5>
+                  <p class="card-text" contenteditable="true">{{ j.description }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <div class="card border-dark mb-3" style="max-width: 50vh;">
+          <div class="card-header" contenteditable="true">{{ i.time }}</div>
+          <div class="card-body text-dark">
+            <h5 class="card-title" contenteditable="true">{{ i.name }}</h5>
+            <p class="card-text" contenteditable="true">{{ i.description }}</p>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
 </div>
 <div>
   <script></script>

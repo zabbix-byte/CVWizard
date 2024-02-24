@@ -24,11 +24,18 @@ def loading_bridge(request):
 
 @login_required(login_url='/auth/signin')
 def new_extraction(request):
-    cookie = check_if_cookie(request.user)
-    if cookie == None:
+    existing_data = request.GET.get('existing_data')
+
+    if existing_data == 'false':
+        cookie = check_if_cookie(request.user)
+        if cookie == None:
+            return redirect('/')
+
+    try:
+        user = UserProfileHtml.objects.get(user=request.user)
+    except UserProfileHtml.DoesNotExist:
         return redirect('/')
-    
-    user = UserProfileHtml.objects.get(user=request.user)
+
     data = user.data
     return render(request, 'generate_cv/home.html', {'data': data})
 
