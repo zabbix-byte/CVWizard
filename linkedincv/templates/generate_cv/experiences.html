@@ -15,7 +15,7 @@
   <div style="row" style="margin-top: 50px;">
     {% for i in data.experiences %}
       {% if i.group|length > 1 %}
-        <div class="card border-dark mb-3" style="max-width: 50vh;">
+        <div class="card border-dark mb-3" style="max-width: 100%;">
           <div class="card-header" id="experience_name_{{ i.id }}" contenteditable="true">{{ i.name }}</div>
           <script>
             $('#experience_name_{{ i.id }}').on('keypress focusout', function (ev) {
@@ -24,7 +24,7 @@
           </script>
           <div class="card-body text-dark">
             {% for j in i.group %}
-              <div class="card border-dark mb-3" style="max-width: 50vh;">
+              <div class="card border-dark mb-3" style="max-width: 100%;">
                 <div class="card-header" id="sub_experience_time_{{ j.id }}" contenteditable="true">{{ j.time }}</div>
                 <div class="card-body text-dark">
                   <h5 class="card-title" id="sub_experience_name_{{ j.id }}" contenteditable="true">{{ j.name }}</h5>
@@ -47,7 +47,7 @@
           </div>
         </div>
       {% else %}
-        <div class="card border-dark mb-3" style="max-width: 50vh;">
+        <div class="card border-dark mb-3" style="max-width: 100%;">
           <div class="card-header" id="experience_time_{{ i.id }}" contenteditable="true">{{ i.time }}</div>
           <div class="card-body text-dark">
             <h5 class="card-title" id="experience_name_{{ i.id }}" contenteditable="true">{{ i.name }}</h5>
