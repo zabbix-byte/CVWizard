@@ -16,31 +16,58 @@
     {% for i in data.experiences %}
       {% if i.group|length > 1 %}
         <div class="card border-dark mb-3" style="max-width: 50vh;">
-          <div class="card-header" contenteditable="true">{{ i.name }}</div>
+          <div class="card-header" id="experience_name_{{ i.id }}" contenteditable="true">{{ i.name }}</div>
+          <script>
+            $('#experience_name_{{ i.id }}').on('keypress focusout', function (ev) {
+              experiences[Number('{{ i.id }}')]['name'] = $(this).text()
+            })
+          </script>
           <div class="card-body text-dark">
             {% for j in i.group %}
               <div class="card border-dark mb-3" style="max-width: 50vh;">
-                <div class="card-header" contenteditable="true">{{ j.time }}</div>
+                <div class="card-header" id="sub_experience_time_{{ j.id }}" contenteditable="true">{{ j.time }}</div>
                 <div class="card-body text-dark">
-                  <h5 class="card-title" contenteditable="true">{{ j.name }}</h5>
-                  <p class="card-text" contenteditable="true">{{ j.description }}</p>
+                  <h5 class="card-title" id="sub_experience_name_{{ j.id }}" contenteditable="true">{{ j.name }}</h5>
+                  <p class="card-text" id="sub_experience_description_{{ j.id }}" contenteditable="true">{{ j.description }}</p>
                 </div>
               </div>
+
+              <script>
+                $('#sub_experience_time_{{ j.id }}').on('keypress focusout', function (ev) {
+                  experiences[Number('{{ i.id }}')]['group'][Number('{{ j.id }}')]['time'] = $(this).text()
+                })
+                $('#sub_experience_name_{{ j.id }}').on('keypress focusout', function (ev) {
+                  experiences[Number('{{ i.id }}')]['group'][Number('{{ j.id }}')]['name'] = $(this).text()
+                })
+                $('#sub_experience_description_{{ j.id }}').on('keypress focusout', function (ev) {
+                  experiences[Number('{{ i.id }}')]['group'][Number('{{ j.id }}')]['description'] = $(this).text()
+                })
+              </script>
             {% endfor %}
           </div>
         </div>
       {% else %}
         <div class="card border-dark mb-3" style="max-width: 50vh;">
-          <div class="card-header" contenteditable="true">{{ i.time }}</div>
+          <div class="card-header" id="experience_time_{{ i.id }}" contenteditable="true">{{ i.time }}</div>
           <div class="card-body text-dark">
-            <h5 class="card-title" contenteditable="true">{{ i.name }}</h5>
-            <p class="card-text" contenteditable="true">{{ i.description }}</p>
+            <h5 class="card-title" id="experience_name_{{ i.id }}" contenteditable="true">{{ i.name }}</h5>
+            <p class="card-text" id="experience_description_{{ i.id }}" contenteditable="true">{{ i.description }}</p>
           </div>
         </div>
+
+        <script>
+          $('#experience_name_{{ i.id }}').on('keypress focusout', function (ev) {
+            experiences[Number('{{ i.id }}')]['name'] = $(this).text()
+          })
+          $('#experience_time_{{ i.id }}').on('keypress focusout', function (ev) {
+            experiences[Number('{{ i.id }}')]['time'] = $(this).text()
+          })
+          $('#experience_description_{{ i.id }}').on('keypress focusout', function (ev) {
+            experiences[Number('{{ i.id }}')]['description'] = $(this).text()
+          })
+        </script>
+        
       {% endif %}
     {% endfor %}
   </div>
-</div>
-<div>
-  <script></script>
 </div>

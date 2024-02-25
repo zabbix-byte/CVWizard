@@ -12,8 +12,26 @@
   <img src="{% static 'projects.png' %}" alt="My image" class="image-home" />
 </div>
 <div class="main-content">
-  <div style="row" style="margin-top: 50px;"></div>
-</div>
-<div>
-  <script></script>
+  <div style="row" style="margin-top: 50px;">
+    {% for i in data.projects %}
+      <div class="card border-dark mb-3" style="max-width: 50vh;">
+        <div class="card-header" id="projects_time_{{ i.id }}" contenteditable="true">{{ i.time }}</div>
+        <div class="card-body text-dark">
+          <h5 class="card-title" id="projects_name_{{ i.id }}" contenteditable="true">{{ i.name }}</h5>
+          <p class="card-text" id="projects_description_{{ i.id }}" contenteditable="true">{{ i.description }}</p>
+        </div>
+      </div>
+      <script>
+        $('#projects_time_{{ i.id }}').on('keypress focusout', function (ev) {
+          projects[Number('{{ i.id }}')]['time'] = $(this).text()
+        })
+        $('#projects_name_{{ i.id }}').on('keypress focusout', function (ev) {
+          projects[Number('{{ i.id }}')]['name'] = $(this).text()
+        })
+        $('#projects_description_{{ i.id }}').on('keypress focusout', function (ev) {
+          projects[Number('{{ i.id }}')]['description'] = $(this).text()
+        })
+      </script>
+    {% endfor %}
+  </div>
 </div>

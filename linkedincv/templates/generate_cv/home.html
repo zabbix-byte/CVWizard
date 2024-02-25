@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block title %}
-Customize
+  Customize
 {% endblock %}
 {% block content %}
   {% load static %}
@@ -74,6 +74,18 @@ Customize
         expedition: '{{i.expedition}}',
         name: '{{i.name}}',
         emitted_by: '{{i.emitted_by}}'
+      },
+      {% endfor %}
+    ]
+    
+
+    var projects = [
+      {% for i in data.projects %}
+      {
+        id: '{{i.id}}',
+        name: '{{i.name}}',
+        time: '{{i.time}}',
+        description: '{{i.description}}'
       },
       {% endfor %}
     ]

@@ -2,7 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.service import Service
 from scraper.Domain import Profile
-from scraper.Domain import License, Experience, Education
+from scraper.Domain import License, Experience, Education, Project
 from scraper.models import UserProfileHtml
 from django.contrib.auth.models import User
 from selenium.webdriver.common.by import By
@@ -253,6 +253,35 @@ class Linkedin:
         return profile
 
     @staticmethod
+    def get_projects(html: str, profile: Profile) -> Profile:
+        soup = BeautifulSoup(html, 'lxml')
+
+        try:
+            list_off_projects = soup.find(
+                'ul',
+                {'class': 'pvs-list'}
+            ).find_all('li', {'class', 'pvs-list__paged-list-item artdeco-list__item pvs-list__item--line-separated pvs-list__item--one-column'})
+        except:
+            profile.projects = []
+
+        id = 0
+        for i in list_off_projects:
+            name = i.find('div', {'class': 'display-flex align-items-center mr1 t-bold'}
+                          ).find('span').get_text().strip()
+            time = i.find('span', {'class': 't-14 t-normal'}).find('span').get_text().strip()
+
+            try:
+                description = i.find(
+                    'div', {'class': 'display-flex align-items-center t-14 t-normal t-black'}).find('span').get_text().strip()
+            except:
+                description = ''
+
+            profile.projects.append(Project(id, name, time, description))
+            id += 1
+
+        return profile
+
+    @staticmethod
     def get_profile_data(cookie: str, user: User, only_check: bool = False, just_li: bool = False) -> bool:
         service = Service(executable_path=r'/usr/local/bin/chromedriver')
         options = webdriver.ChromeOptions()
@@ -343,8 +372,16 @@ class Linkedin:
 
         print(f'[Extracting::{username}] General education info loaded')
 
-        driver.close()
+        driver.get(f'https://www.linkedin.com/in/{username}/details/projects/')
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
+        Linkedin.scroll(driver)
+        profile = Linkedin.get_projects(driver.page_source, profile)
 
+        print(f'[Extracting::{username}] General projects info loaded')
+
+        driver.close()
         profile = profile.serrialize()
         try:
             user = UserProfileHtml.objects.get(
