@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import copy
 import re
 
 
@@ -57,7 +58,7 @@ class Linkedin:
                 'span', {'class': 'text-body-small inline t-black--light break-words'}).get_text().strip()
         except:
             location = ''
-        return Profile(name=name, title=title, description=description, location=location)
+        return copy.deepcopy(Profile(name=name, title=title, description=description, location=location))
 
     @staticmethod
     def get_contact_info(html: str, profile: Profile):
@@ -91,6 +92,8 @@ class Linkedin:
     @staticmethod
     def get_certifications(html: str, profile: Profile) -> Profile:
         soup = BeautifulSoup(html, 'lxml')
+        id = 0
+
         try:
             list_off_licenses = soup.find(
                 'ul',
@@ -118,11 +121,13 @@ class Linkedin:
                     expedition = ''
 
                 c_license = License(
+                    id=id,
                     name=name,
                     emitted_by=emitted_by,
                     expedition=expedition
                 )
                 profile.licences.append(c_license)
+                id += 1
             except:
                 continue
 
@@ -131,6 +136,7 @@ class Linkedin:
     @staticmethod
     def get_experience(html: str, profile: Profile) -> Profile:
         soup = BeautifulSoup(html, 'lxml')
+        id = 0
 
         try:
             list_off_experiences = soup.find(
@@ -151,12 +157,13 @@ class Linkedin:
                 except:
                     continue
 
-            current_experience = Experience(name=name)
+            current_experience = Experience(name=name, id=id)
 
             try:
                 # group of experiences
                 group = i.find('ul', {'class': 'pvs-list'})
                 elemets = group.find_all('li', {'class': 'pvs-list__paged-list-item pvs-list__item--one-column'})
+                temp_id = 0
                 for j in elemets:
                     element_name = j.find(
                         'div', {'class': 'display-flex align-items-center mr1 hoverable-link-text t-bold'}).find('span').get_text().strip()
@@ -173,9 +180,11 @@ class Linkedin:
                     except:
                         element_description = ''
 
-                    sub_exprecience = Experience(name=element_name, time=element_time, description=element_description)
+                    sub_exprecience = Experience(id=temp_id, name=element_name,
+                                                 time=element_time, description=element_description)
                     sub_exprecience.group = None
                     current_experience.group.append(sub_exprecience)
+                    temp_id += 1
             except:
                 current_experience.group = None
 
@@ -197,6 +206,8 @@ class Linkedin:
 
             profile.experiences.append(current_experience)
 
+            id += 1
+
         return profile
 
     @staticmethod
@@ -211,6 +222,7 @@ class Linkedin:
         except:
             profile.education = []
 
+        id = 0
         for i in list_off_education:
             try:
                 name = i.find(
@@ -236,7 +248,8 @@ class Linkedin:
             except:
                 time = ''
 
-            profile.education.append(Education(name=name, entity=entity, time=time))
+            profile.education.append(Education(name=name, entity=entity, time=time, id=id))
+            id += 1
         return profile
 
     @staticmethod

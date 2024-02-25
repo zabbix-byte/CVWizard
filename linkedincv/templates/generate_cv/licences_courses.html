@@ -15,12 +15,23 @@
   <div style="row" style="margin-top: 50px;">
     {% for i in data.licences %}
       <div class="card border-dark mb-3" style="max-width: 50vh;">
-        <div class="card-header" contenteditable="true">{{ i.expedition }}</div>
+        <div class="card-header" id="_licenses_expedition_{{ i.id }}" contenteditable="true">{{ i.expedition }}</div>
         <div class="card-body text-dark">
-          <h5 class="card-title" contenteditable="true">{{ i.name }}</h5>
-          <p class="card-text" contenteditable="true">{{ i.emitted_by }}</p>
+          <h5 class="card-title" id="_licenses_name_{{ i.id }}" contenteditable="true">{{ i.name }}</h5>
+          <p class="card-text" id="_licenses_emitted_by_{{ i.id }}" contenteditable="true">{{ i.emitted_by }}</p>
         </div>
       </div>
+      <script>
+        $('#_licenses_expedition_{{ i.id }}').on('keypress focusout', function (ev) {
+          licenses[Number('{{ i.id }}')]['expedition'] = $(this).text()
+        })
+        $('#_licenses_name_{{ i.id }}').on('keypress focusout', function (ev) {
+          licenses[Number('{{ i.id }}')]['name'] = $(this).text()
+        })
+        $('#_licenses_emitted_by_{{ i.id }}').on('keypress focusout', function (ev) {
+          licenses[Number('{{ i.id }}')]['emitted_by'] = $(this).text()
+        })
+      </script>
     {% endfor %}
   </div>
 </div>

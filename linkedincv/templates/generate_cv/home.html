@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block title %}
-  -> CV
+Customize
 {% endblock %}
 {% block content %}
   {% load static %}
@@ -38,6 +38,7 @@
     var education = [
       {% for i in data.education %}
       {
+        id: '{{i.id}}',
         time: '{{i.time}}',
         entity: '{{i.entity}}',
         name: '{{i.name}}'
@@ -48,12 +49,14 @@
     var experiences = [
       {% for i in data.experiences %}
       {
+        id: '{{i.id}}',
         name: '{{i.name}}',
         time: '{{i.time}}',
         description: '{{i.description}}',
         group: [
           {% for j in i.group %}
           {
+            id: '{{j.id}}',
             name: '{{j.name}}',
             time: '{{j.time}}',
             description: '{{j.description}}'
@@ -67,6 +70,7 @@
     var licenses = [
       {% for i in data.licences %}
       {
+        id: '{{i.id}}',
         expedition: '{{i.expedition}}',
         name: '{{i.name}}',
         emitted_by: '{{i.emitted_by}}'

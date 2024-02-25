@@ -15,15 +15,24 @@
   <div style="row" style="margin-top: 50px;">
     {% for i in data.education %}
       <div class="card border-dark mb-3" style="max-width: 50vh;">
-        <div class="card-header" contenteditable="true">{{i.time}}</div>
+        <div class="card-header" id="education_time_{{ i.id }}" contenteditable="true">{{ i.time }}</div>
         <div class="card-body text-dark">
-          <h5 class="card-title" contenteditable="true">{{i.entity}}</h5>
-          <p class="card-text" contenteditable="true">{{i.name}}</p>
+          <h5 class="card-title" id="entity_{{ i.id }}" contenteditable="true">{{ i.entity }}</h5>
+          <p class="card-text" id="name_{{ i.id }}" contenteditable="true">{{ i.name }}</p>
         </div>
       </div>
+      <script>
+        $('#education_time_{{ i.id }}').on('keypress focusout', function (ev) {
+          education[Number('{{ i.id }}')]['time'] = $(this).text()
+        })
+        $('#entity_{{ i.id }}').on('keypress focusout', function (ev) {
+          education[Number('{{ i.id }}')]['entity'] = $(this).text()
+        })
+        $('#name_{{ i.id }}').on('keypress focusout', function (ev) {
+          education[Number('{{ i.id }}')]['name'] = $(this).text()
+        })
+      </script>
     {% endfor %}
   </div>
 </div>
-<div>
-  <script></script>
-</div>
+<div></div>
