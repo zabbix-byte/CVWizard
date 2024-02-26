@@ -8,128 +8,54 @@
 <br />
 <div class="main-content">
   <div style="row" style="margin-top: 50px;">
-    <h2>Good day, <strong>{{ user.username }}!</strong> It's nice to see you</h2>
-
-    <div class="container border main-content-home">
-      {% if cv_exists == False %}
-        <div class="h-100 d-flex align-items-center justify-content-center" >
-          <div style="position: absolute;z-index: 1000;margin-top: 25px;">
-            {% if cookie_exists == True %}
-              {% if exists_profile == True %}
-              <a data-toggle="modal" data-target="#modetocreateacv" class="btn btn-light">
-                <svg xmlns="http://www.w3.org/2000/svg" class="add-resume-button" width="75" height="75" fill="currentColor" class="bi bi-plus-square-dotted" viewBox="0 0 16 16">
-                  <path d="M2.5 0q-.25 0-.487.048l.194.98A1.5 1.5 0 0 1 2.5 1h.458V0zm2.292 0h-.917v1h.917zm1.833 0h-.917v1h.917zm1.833 0h-.916v1h.916zm1.834 0h-.917v1h.917zm1.833 0h-.917v1h.917zM13.5 0h-.458v1h.458q.151 0 .293.029l.194-.981A2.5 2.5 0 0 0 13.5 0m2.079 1.11a2.5 2.5 0 0 0-.69-.689l-.556.831q.248.167.415.415l.83-.556zM1.11.421a2.5 2.5 0 0 0-.689.69l.831.556c.11-.164.251-.305.415-.415zM16 2.5q0-.25-.048-.487l-.98.194q.027.141.028.293v.458h1zM.048 2.013A2.5 2.5 0 0 0 0 2.5v.458h1V2.5q0-.151.029-.293zM0 3.875v.917h1v-.917zm16 .917v-.917h-1v.917zM0 5.708v.917h1v-.917zm16 .917v-.917h-1v.917zM0 7.542v.916h1v-.916zm15 .916h1v-.916h-1zM0 9.375v.917h1v-.917zm16 .917v-.917h-1v.917zm-16 .916v.917h1v-.917zm16 .917v-.917h-1v.917zm-16 .917v.458q0 .25.048.487l.98-.194A1.5 1.5 0 0 1 1 13.5v-.458zm16 .458v-.458h-1v.458q0 .151-.029.293l.981.194Q16 13.75 16 13.5M.421 14.89c.183.272.417.506.69.689l.556-.831a1.5 1.5 0 0 1-.415-.415zm14.469.689c.272-.183.506-.417.689-.69l-.831-.556c-.11.164-.251.305-.415.415l.556.83zm-12.877.373Q2.25 16 2.5 16h.458v-1H2.5q-.151 0-.293-.029zM13.5 16q.25 0 .487-.048l-.194-.98A1.5 1.5 0 0 1 13.5 15h-.458v1zm-9.625 0h.917v-1h-.917zm1.833 0h.917v-1h-.917zm1.834-1v1h.916v-1zm1.833 1h.917v-1h-.917zm1.833 0h.917v-1h-.917zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
-                </svg>
-              </a>
-              {% else %}
-                <a href="/loading_bridge?to=new_cv" class="btn btn-light">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="add-resume-button" width="75" height="75" fill="currentColor" class="bi bi-plus-square-dotted" viewBox="0 0 16 16">
-                    <path d="M2.5 0q-.25 0-.487.048l.194.98A1.5 1.5 0 0 1 2.5 1h.458V0zm2.292 0h-.917v1h.917zm1.833 0h-.917v1h.917zm1.833 0h-.916v1h.916zm1.834 0h-.917v1h.917zm1.833 0h-.917v1h.917zM13.5 0h-.458v1h.458q.151 0 .293.029l.194-.981A2.5 2.5 0 0 0 13.5 0m2.079 1.11a2.5 2.5 0 0 0-.69-.689l-.556.831q.248.167.415.415l.83-.556zM1.11.421a2.5 2.5 0 0 0-.689.69l.831.556c.11-.164.251-.305.415-.415zM16 2.5q0-.25-.048-.487l-.98.194q.027.141.028.293v.458h1zM.048 2.013A2.5 2.5 0 0 0 0 2.5v.458h1V2.5q0-.151.029-.293zM0 3.875v.917h1v-.917zm16 .917v-.917h-1v.917zM0 5.708v.917h1v-.917zm16 .917v-.917h-1v.917zM0 7.542v.916h1v-.916zm15 .916h1v-.916h-1zM0 9.375v.917h1v-.917zm16 .917v-.917h-1v.917zm-16 .916v.917h1v-.917zm16 .917v-.917h-1v.917zm-16 .917v.458q0 .25.048.487l.98-.194A1.5 1.5 0 0 1 1 13.5v-.458zm16 .458v-.458h-1v.458q0 .151-.029.293l.981.194Q16 13.75 16 13.5M.421 14.89c.183.272.417.506.69.689l.556-.831a1.5 1.5 0 0 1-.415-.415zm14.469.689c.272-.183.506-.417.689-.69l-.831-.556c-.11.164-.251.305-.415.415l.556.83zm-12.877.373Q2.25 16 2.5 16h.458v-1H2.5q-.151 0-.293-.029zM13.5 16q.25 0 .487-.048l-.194-.98A1.5 1.5 0 0 1 13.5 15h-.458v1zm-9.625 0h.917v-1h-.917zm1.833 0h.917v-1h-.917zm1.834-1v1h.916v-1zm1.833 1h.917v-1h-.917zm1.833 0h.917v-1h-.917zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
-                  </svg>
-                </a>
-              {% endif %}
-            {% else %}
-            <svg xmlns="http://www.w3.org/2000/svg"  style="margin-left: 36%;" color="orange" width="50" height="50" style="margin-bottom: 2px;" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
-              <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
-              <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
-            </svg>
-
-            <h6>
-              <strong>Set up your LinkedIn access</strong>
-            </h6>
-            
-            {% endif %}
-          </div>
-          <div class="card"  style="width: 18rem;" >
-            <div class="card-body" style="text-align: center;">
-              <strong>Click to conjure your resume!</strong>
-            </div>
-            <img class="card-img-top" style="filter: blur(2.5px)" src="https://lh4.googleusercontent.com/7Gp0aTVNaoUdfNfEms9bKzqgrRbQ6uQaCANFPUuJ6sFjenUv7dOos1oeNwxrY4hbMAaZmS_pZOUXk3UWmr8j7XHXbfZFSSWn9aDPcPs2bjEB3Rsd2qQxHtmWhpbEn_3a0df0Mw4i" alt="Card image cap" />
-          </div>
-        <div>
-      {% else %}
-
+    <button style="float: right;" class="btn btn-page btn-lg" data-toggle="modal" data-target="#modetocreateacv">
+      Craft Your CV{% if cookie_exists == False %}
+        <svg xmlns="http://www.w3.org/2000/svg" color="white" width="20" height="20" style="margin-bottom: 4px;margin-left: 5px;" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+          <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z" />
+          <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+        </svg>
       {% endif %}
-    </div>
+    </button>
+    <h2>Good day, <strong>{{ user.username }}!</strong> It's nice to see you</h2>
+    <div class="container border main-content-home" style="margin-top: 1rem;"></div>
   </div>
 </div>
-  <style>
-    .add-resume-button {
-      filter: invert(30%) sepia(66%) saturate(580%) hue-rotate(207deg) brightness(86%) contrast(95%);
-    }
-
-    .add-resume-button:hover {
-      filter: invert(3%) sepia(25%) saturate(3237%) hue-rotate(188deg) brightness(94%) contrast(91%);
-    }
-
-    .btn-light {
-      border-color: transparent;
-      background-color: transparent;
-    }
-
-    .btn-light:hover {
-      background-color: transparent;
-      border-color: transparent;
-    }
-
-    .main-content-home {
-      border-radius: 3px;
-      border-color: #343a40;
-      margin-bottom: 10px;
-    }
-    
-    @media screen and (max-height: 2000px) {
-      .main-content-home {
-        height: 1500px;
-      }
-    }
-    
-    @media screen and (max-height: 1500px) {
-      .main-content-home {
-        height: 1000px;
-      }
-    }
-    
-    @media screen and (max-height: 1200px) {
-      .main-content-home {
-        height: 800px;
-      }
-    }
-    
-    @media screen and (max-height: 800px) {
-      .main-content-home {
-        height: 500px;
-      }
-    }
-
-    @media screen and (max-height: 500px) {
-      .main-content-home {
-        height: 300px;
-      }
-    }
-  </style>
-
-  <div class="modal fade" id="modetocreateacv" tabindex="-1" role="dialog" aria-labelledby="modetocreateacvLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modetocreateacvLabel">Select your CV creation mode</h5>
+<div class="modal fade" id="modetocreateacv" tabindex="-1" role="dialog" aria-labelledby="modetocreateacvLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modetocreateacvLabel">Select your CV creation mode</h5>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <div class="form-group">
+          <h5 for="existing_data">This option allows you to retrieve data from our system instantly, eliminating the need to wait for extraction</h5>
+          <br />
+          {% if exists_profile == True %}
+            <h4><strong>Last update:</strong> {{ last_modified }}</h4>
+            <a href="/loading_bridge?to=new_cv?existing_data=true" id="existing_data" class="btn btn-success btn-lg">Retrieve the most recent extraction</a>
+          {% else %}
+            <h4><strong>Last update:</strong> No extraction located</h4>
+            <button id="existing_data" class="btn btn-success btn-lg" disabled>Retrieve the most recent extraction</button>
+          {% endif %}
         </div>
-          <div class="modal-body" style="text-align: center;">
-            <div class="form-group" >
-              <h5 for="existing_data">This option allows you to retrieve data from our system instantly, eliminating the need to wait for extraction</h5>
-              <br/>
-              <h4><strong>Last update:</strong> {{last_modified}}</h4>
-              <a href="/loading_bridge?to=new_cv?existing_data=true" id="existing_data" class="btn btn-success">Retrieve the most recent extraction</a>
-            </div>
-            <hr/>
-            <div class="form-group" style="margin-top: 10px;">
-              <h5 for="not_existing_data">This option extracts fresh data from your LinkedIn profile. Please allow some time for the complete retrieval of information</h5>
-              <br/>
-              <a href="/loading_bridge?to=new_cv?existing_data=false" id="not_existing_data"  class="btn btn-page">Fresh data extraction from LinkedIn</a>
-            </div>
-          </div>
+        <hr />
+        <div class="form-group" style="margin-top: 10px;">
+          <h5 for="not_existing_data">This option extracts fresh data from your LinkedIn profile. Please allow some time for the complete retrieval of information</h5>
+
+          {% if cookie_exists == False %}
+            <h4><strong>NOTE:</strong> To extract data from LinkedIn, you must first establish a connection</h4>
+            <button id="not_existing_data" class="btn btn-page btn-lg" disabled>
+              Fresh data extraction from LinkedIn<svg xmlns="http://www.w3.org/2000/svg" color="orange" width="20" height="20" style="margin-bottom: 4px;margin-left: 5px;" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z" />
+                <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
+              </svg>
+            </button>
+          {% else %}
+            <h4><strong>NOTE:</strong> This process typically takes between 2 to 4 minutes</h4>
+            <a href="/loading_bridge?to=new_cv?existing_data=false" id="not_existing_data" class="btn btn-page btn-lg">Fresh data extraction from LinkedIn</a>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>
-  
+</div>
