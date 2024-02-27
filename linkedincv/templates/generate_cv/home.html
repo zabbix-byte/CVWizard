@@ -242,7 +242,26 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" id="export-submit-to-template" class="btn btn-page">Save & Choose a template</button>
+          <button type="button" id="export-submit-to-template-confirmation" class="btn btn-page">Save & Choose a template</button>
+          <script>
+            $('#export-submit-to-template-confirmation').click(function () {
+              $('#confirmation-export').modal('show'); 
+            })
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 1.6%" class="modal fade" id="confirmation-export" tabindex="-1" role="dialog" aria-labelledby="confirmation-exportLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div style="border: 3px solid #0d141c" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmation-exportLabel"><strong>Are you sure you want to use this information to create the CV?</strong></h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button type="button" id="export-submit-to-template" class="btn btn-page">Yes</button>
           <script>
             function handle_export(success) {
               if (success.hasOwnProperty('error')) {
@@ -250,10 +269,14 @@
                 $('#export-message').css('display', 'flex')
               } else {
                 $('#export-message').css('display', 'none')
+
+                if (success.hasOwnProperty('uuid')) {
+                  window.location.href = '/cv/template/'+success['uuid']
+                }
               }
             }
-            
             $('#export-submit-to-template').click(function () {
+
               fetch(`/cv/export`, {
                 method: 'Post',
                 credentials: 'same-origin',

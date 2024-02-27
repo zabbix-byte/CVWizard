@@ -43,6 +43,6 @@ def export(request):
 
             export.save()
 
-            return JsonResponse({'uuid': export.id})
+            return JsonResponse({'uuid': export.id.hex})
 
     return JsonResponse({'okk': True})
