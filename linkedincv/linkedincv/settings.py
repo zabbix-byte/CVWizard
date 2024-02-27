@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     # local
     'sign',
     'scraper',
-    'home'
+    'home',
+    'cv'
 ]
 
 AUTHENTICATION_BACKENDS = (

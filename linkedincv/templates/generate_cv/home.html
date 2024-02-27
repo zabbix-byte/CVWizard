@@ -98,45 +98,6 @@
       },
       {% endfor %}
     ]
-
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    
-
-    $('#export-cv').click(function () {
-      fetch(`/cv/export`, {
-        method: 'Post',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-            "X-CSRFToken": getCookie("csrftoken")
-
-        },
-        body: JSON.stringify({
-            'csrfmiddlewaretoken': '{% csrf_token %}',
-            'basic_information': map_basic_information,
-            'education': education,
-            'experiences': experiences,
-            'licenses': licenses,
-            'projects': projects,
-            'hide_basic_information_items': hide_basic_information_items
-        })
-    }).then(resp => resp.json()).then(success => createSchedulerEvent(success));
-    })
-
   </script>
   <script>
     $('#to-education').click(function () {
@@ -266,4 +227,56 @@
       }
     }
   </style>
+
+  <div class="modal fade" id="export-cv-modal" tabindex="-1" role="dialog" aria-labelledby="export-cv-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="export-cv-modalLabel">Assign a name to your export</h5>
+        </div>
+        <div class="modal-body">
+          <div id="export-message" style="display: none;" class="alert alert-warning" role="alert"></div>
+          <div class="form-group">
+            <label for="export-name">Export Name</label>
+            <input type="text" class="form-control" id="export-name" value="{{ data.name }} - {{ export_date }}" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="export-submit-to-template" class="btn btn-page">Save & Choose a template</button>
+          <script>
+            function handle_export(success) {
+              if (success.hasOwnProperty('error')) {
+                $('#export-message').text(success.error)
+                $('#export-message').css('display', 'flex')
+              } else {
+                $('#export-message').css('display', 'none')
+              }
+            }
+            
+            $('#export-submit-to-template').click(function () {
+              fetch(`/cv/export`, {
+                method: 'Post',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    "X-CSRFToken": getCookie("csrftoken")
+        
+                },
+                body: JSON.stringify({
+                    'csrfmiddlewaretoken': '{% csrf_token %}',
+                    'basic_information': map_basic_information,
+                    'education': education,
+                    'experiences': experiences,
+                    'licenses': licenses,
+                    'projects': projects,
+                    'hide_basic_information_items': hide_basic_information_items,
+                    'name': $('#export-name').val()
+                })
+            }).then(resp => resp.json()).then(success => handle_export(success));
+            })
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

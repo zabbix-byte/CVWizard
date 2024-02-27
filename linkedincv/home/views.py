@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -37,7 +38,7 @@ def new_extraction(request):
         return redirect('/')
 
     data = user.data
-    return render(request, 'generate_cv/home.html', {'data': data})
+    return render(request, 'generate_cv/home.html', {'data': data, 'export_date': datetime.now()})
 
 
 @login_required(login_url='/auth/signin')
