@@ -7,6 +7,7 @@ from scraper.Infrastructure import Linkedin
 from scraper.models import UserCookie
 
 from scraper.check_if_cookie import check_if_cookie
+from cv.models import ExportedCv
 
 
 @login_required(login_url='/auth/signin')
@@ -84,7 +85,14 @@ def index(request):
         last_modified = profile_data[0]['last_modified']
         exists_profile = True
 
+    exported_cv = [{'name': i['name'], 'uuid': i['id'].hex}
+                   for i in ExportedCv.objects.filter(user=request.user).values('id', 'name')]
+    exported_cv_not_exists = True if len(exported_cv) == 0 else False
+
     return render(request, 'home/home.html', {'cv_exists': cv_exists,
                                               'cookie_exists': cookie_exists,
                                               'exists_profile': exists_profile,
-                                              'last_modified': last_modified})
+                                              'last_modified': last_modified,
+                                              'exported_cv': exported_cv,
+                                              'exported_cv_not_exists': exported_cv_not_exists
+                                              })
