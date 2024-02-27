@@ -22,11 +22,21 @@
         </div>
         <div class="form-group">
           <label for="data-title">Title</label>
-          <input type="text" class="form-control" id="data-title" value="{{ data.title }}" placeholder="" />
+          <div class="input-group">
+            <input type="text" class="form-control hide_input" id="data-title" value="{{ data.title }}" placeholder="" />
+            <div class="input-group-append">
+              <button class="btn btn-page hide_button" type="button" id="hide_data-title">Hide</button>
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <label for="data-description">Description</label>
-          <textarea type="text" class="form-control" id="data-description" style="height: 150px;" placeholder="" />{{ data.description }}</textarea>
+          <div class="input-group">
+            <textarea type="text" class="form-control" id="data-description" style="height: 175px;" placeholder="" />{{ data.description }}</textarea>
+            <div class="input-group-append">
+              <button class="btn btn-page hide_button" style="height: 100%;" type="button" id="hide_data-description">Hide</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -37,25 +47,80 @@
         <h5 class="card-title">Contact</h5>
         <div class="form-group">
           <label for="data-email">Email</label>
-          <input type="email" class="form-control" id="data-email" value="{{ data.email }}" placeholder="" />
+          <div class="input-group">
+            <input type="email" class="form-control hide_input" id="data-email" value="{{ data.email }}" placeholder="" />
+            <div class="input-group-append">
+              <button class="btn btn-page hide_button" type="button" id="hide_data-email">Hide</button>
+            </div>
+          </div> 
         </div>
         <div class="form-group">
             <label for="data-location">Location</label>
-            <input type="text" class="form-control" id="data-location" value="{{ data.location }}" placeholder="" />
+            <div class="input-group">
+              <input type="text" class="form-control hide_input" id="data-location" value="{{ data.location }}" placeholder="" />
+              <div class="input-group-append">
+                <button class="btn btn-page hide_button" type="button" id="hide_data-location">Hide</button>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="data-web_page">Web page</label>
-            <input type="text" class="form-control" id="data-web_page" value="{{ data.web_page }}" placeholder="" />
+            <div class="input-group">
+              <input type="text" class="form-control hide_input" id="data-web_page" value="{{ data.web_page }}" placeholder="" />
+              <div class="input-group-append">
+                <button class="btn btn-page hide_button" type="button" id="hide_data-web_page">Hide</button>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="data-phone_number">Phone Number</label>
-            <input type="text" class="form-control" id="data-phone_number" value="{{ data.phone_number }}" placeholder="" />
+            <div class="input-group">
+              <input type="text" class="form-control hide_input" id="data-phone_number" value="{{ data.phone_number }}" placeholder="" />
+              <div class="input-group-append">
+                <button class="btn btn-page hide_button" type="button" id="hide_data-phone_number">Hide</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 </div>
 </div>
+
+
+<script>
+  $(document).ready(function(){
+    $('#hide_data-title').click(function(){
+      $('#data-title').prop('disabled', function(i, v) { return !v; });
+    });
+    $('#hide_data-description').click(function(){
+      $('#data-description').prop('disabled', function(i, v) { 
+        hide_basic_information_items['description'] = !v;
+        return !v; });
+    });
+    $('#hide_data-email').click(function(){
+      $('#data-email').prop('disabled', function(i, v) { 
+        hide_basic_information_items['email'] = !v;
+        return !v; });
+    });
+    $('#hide_data-location').click(function(){
+      $('#data-location').prop('disabled', function(i, v) { 
+        hide_basic_information_items['location'] = !v;
+        return !v; });
+    });
+    $('#hide_data-web_page').click(function(){
+      $('#data-web_page').prop('disabled', function(i, v) { 
+        hide_basic_information_items['web_page'] = !v;
+        return !v; });
+    });
+    $('#hide_data-phone_number').click(function(){
+      $('#data-phone_number').prop('disabled', function(i, v) { 
+        hide_basic_information_items['phone_number'] = !v;
+        return !v; 
+      });
+    });
+  });
+</script>
 
 <script>
   $('#data-name').focusout(function() {
@@ -88,5 +153,15 @@
   .form-group {
     margin: 0.5rem;
     margin-top: 1rem;
+  }
+
+  .hide_input {
+    border-right-radius: 0px;
+    border-right: 5px solid #4f4598
+  }
+
+  .hide_button {
+    border-radius: 0px;
+    margin-left: 5px;
   }
 </style>

@@ -25,6 +25,15 @@
   </div>
 
   <script>
+    var hide_basic_information_items = {
+      title: false,
+      description: false,
+      email: false,
+      location: false,
+      web_page: false,
+      phone_number: false
+    }
+
     var map_basic_information = {
       name: '{{ data.name }}',
       title: '{{ data.title }}',
@@ -89,6 +98,44 @@
       },
       {% endfor %}
     ]
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+
+    $('#export-cv').click(function () {
+      fetch(`/cv/export`, {
+        method: 'Post',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            "X-CSRFToken": getCookie("csrftoken")
+
+        },
+        body: JSON.stringify({
+            'csrfmiddlewaretoken': '{% csrf_token %}',
+            'basic_information': map_basic_information,
+            'education': education,
+            'experiences': experiences,
+            'licenses': licenses,
+            'projects': projects,
+            'hide_basic_information_items': hide_basic_information_items
+        })
+    }).then(resp => resp.json()).then(success => createSchedulerEvent(success));
+    })
 
   </script>
   <script>

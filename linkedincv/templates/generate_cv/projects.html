@@ -31,6 +31,8 @@
         $('#projects_description_{{ i.id }}').on('keypress focusout', function (ev) {
           projects[Number('{{ i.id }}')]['description'] = $(this).text()
         })
+        
+        $('#to-export').click(function () {})
       </script>
     {% endfor %}
   </div>
