@@ -14,24 +14,50 @@
 <div class="main-content">
   <div style="row" style="margin-top: 50px;">
     {% for i in data.education %}
-      <div class="card border-dark mb-3" style="max-width: 100%;">
-        <div class="card-header" id="education_time_{{ i.id }}" contenteditable="true">{{ i.time }}</div>
-        <div class="card-body text-dark">
-          <h5 class="card-title" id="entity_{{ i.id }}" contenteditable="true">{{ i.entity }}</h5>
-          <p class="card-text" id="name_{{ i.id }}" contenteditable="true">{{ i.name }}</p>
+      <div id="education_index_{{ i.id }}" class="input-group">
+        <div class="card border-dark mb-3" style="max-width: 80%;margin-bottom: 5px !important">
+          <div class="card-header" id="education_time_{{ i.id }}" contenteditable="true">{{ i.time }}</div>
+          <div class="card-body text-dark">
+            <h5 class="card-title" id="entity_{{ i.id }}" contenteditable="true">{{ i.entity }}</h5>
+            <p class="card-text" id="name_{{ i.id }}" contenteditable="true">{{ i.name }}</p>
+          </div>
         </div>
+        <div class="input-group-append">
+          <button class="btn btn-page hide_button" onClick="removeEducation('{{ i.id }}')" style="height: 97%;" type="button">Remove</button>
+        </div>
+        <script>
+          $('#education_time_{{ i.id }}').on('keypress focusout', function (ev) {
+            for (var i = 0; i < education.length; i++) {
+              if (Number(education[i].id) === Number('{{ i.id }}')) {
+                education[i].time = $(this).text()
+              }
+            }
+          })
+          $('#entity_{{ i.id }}').on('keypress focusout', function (ev) {
+            for (var i = 0; i < education.length; i++) {
+              if (Number(education[i].id) === Number('{{ i.id }}')) {
+                education[i].entity = $(this).text()
+              }
+            }
+          })
+          $('#name_{{ i.id }}').on('keypress focusout', function (ev) {
+            for (var i = 0; i < education.length; i++) {
+              if (Number(education[i].id) === Number('{{ i.id }}')) {
+                education[i].name = $(this).text()
+              }
+            }
+          })
+        </script>
       </div>
-      <script>
-        $('#education_time_{{ i.id }}').on('keypress focusout', function (ev) {
-          education[Number('{{ i.id }}')]['time'] = $(this).text()
-        })
-        $('#entity_{{ i.id }}').on('keypress focusout', function (ev) {
-          education[Number('{{ i.id }}')]['entity'] = $(this).text()
-        })
-        $('#name_{{ i.id }}').on('keypress focusout', function (ev) {
-          education[Number('{{ i.id }}')]['name'] = $(this).text()
-        })
-      </script>
     {% endfor %}
+
+    <script>
+      function removeEducation(id) {
+        education = education.filter(function (dict) {
+          return Number(dict['id']) !== Number(id)
+        })
+        $('#education_index_' + id).remove()
+      }
+    </script>
   </div>
 </div>

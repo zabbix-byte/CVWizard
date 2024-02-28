@@ -23,13 +23,25 @@
       </div>
       <script>
         $('#projects_time_{{ i.id }}').on('keypress focusout', function (ev) {
-          projects[Number('{{ i.id }}')]['time'] = $(this).text()
+          for (var i = 0; i < projects.length; i++) {
+            if (Number(projects[i].id) === Number('{{ i.id }}')) {
+              projects[i].time = $(this).text()
+            }
+          }
         })
         $('#projects_name_{{ i.id }}').on('keypress focusout', function (ev) {
-          projects[Number('{{ i.id }}')]['name'] = $(this).text()
+          for (var i = 0; i < projects.length; i++) {
+            if (Number(projects[i].id) === Number('{{ i.id }}')) {
+              projects[i].name = $(this).text()
+            }
+          }
         })
         $('#projects_description_{{ i.id }}').on('keypress focusout', function (ev) {
-          projects[Number('{{ i.id }}')]['description'] = $(this).text()
+          for (var i = 0; i < projects.length; i++) {
+            if (Number(projects[i].id) === Number('{{ i.id }}')) {
+              projects[i].description = $(this).text()
+            }
+          }
         })
         
         $('#to-export').click(function () {})

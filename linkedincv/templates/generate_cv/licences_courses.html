@@ -23,13 +23,25 @@
       </div>
       <script>
         $('#_licenses_expedition_{{ i.id }}').on('keypress focusout', function (ev) {
-          licenses[Number('{{ i.id }}')]['expedition'] = $(this).text()
+          for (var i = 0; i < licenses.length; i++) {
+            if (Number(licenses[i].id) === Number('{{ i.id }}')) {
+              licenses[i].expedition = $(this).text()
+            }
+          }
         })
         $('#_licenses_name_{{ i.id }}').on('keypress focusout', function (ev) {
-          licenses[Number('{{ i.id }}')]['name'] = $(this).text()
+          for (var i = 0; i < licenses.length; i++) {
+            if (Number(licenses[i].id) === Number('{{ i.id }}')) {
+              licenses[i].name = $(this).text()
+            }
+          }
         })
         $('#_licenses_emitted_by_{{ i.id }}').on('keypress focusout', function (ev) {
-          licenses[Number('{{ i.id }}')]['emitted_by'] = $(this).text()
+          for (var i = 0; i < licenses.length; i++) {
+            if (Number(licenses[i].id) === Number('{{ i.id }}')) {
+              licenses[i].emitted_by = $(this).text()
+            }
+          }
         })
       </script>
     {% endfor %}

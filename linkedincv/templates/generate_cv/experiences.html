@@ -34,13 +34,37 @@
 
               <script>
                 $('#sub_experience_time_{{ j.id }}').on('keypress focusout', function (ev) {
-                  experiences[Number('{{ i.id }}')]['group'][Number('{{ j.id }}')]['time'] = $(this).text()
+                  for (var i = 0; i < experiences.length; i++) {
+                    if (Number(experiences[i].id) === Number('{{ i.id }}')) {
+                      for (var j = 0; j < experiences[i].group.length; j++) {
+                        if (Number(experiences[i].group[j].id) === Number('{{ j.id }}')) {
+                          experiences[i].group[j].time = $(this).text()
+                        }
+                      }
+                    }
+                  }
                 })
                 $('#sub_experience_name_{{ j.id }}').on('keypress focusout', function (ev) {
-                  experiences[Number('{{ i.id }}')]['group'][Number('{{ j.id }}')]['name'] = $(this).text()
+                  for (var i = 0; i < experiences.length; i++) {
+                    if (Number(experiences[i].id) === Number('{{ i.id }}')) {
+                      for (var j = 0; j < experiences[i].group.length; j++) {
+                        if (Number(experiences[i].group[j].id) === Number('{{ j.id }}')) {
+                          experiences[i].group[j].name = $(this).text()
+                        }
+                      }
+                    }
+                  }
                 })
                 $('#sub_experience_description_{{ j.id }}').on('keypress focusout', function (ev) {
-                  experiences[Number('{{ i.id }}')]['group'][Number('{{ j.id }}')]['description'] = $(this).text()
+                  for (var i = 0; i < experiences.length; i++) {
+                    if (Number(experiences[i].id) === Number('{{ i.id }}')) {
+                      for (var j = 0; j < experiences[i].group.length; j++) {
+                        if (Number(experiences[i].group[j].id) === Number('{{ j.id }}')) {
+                          experiences[i].group[j].description = $(this).text()
+                        }
+                      }
+                    }
+                  }
                 })
               </script>
             {% endfor %}
@@ -57,16 +81,27 @@
 
         <script>
           $('#experience_name_{{ i.id }}').on('keypress focusout', function (ev) {
-            experiences[Number('{{ i.id }}')]['name'] = $(this).text()
+            for (var i = 0; i < experiences.length; i++) {
+              if (Number(experiences[i].id) === Number('{{ i.id }}')) {
+                experiences[i].name = $(this).text()
+              }
+            }
           })
           $('#experience_time_{{ i.id }}').on('keypress focusout', function (ev) {
-            experiences[Number('{{ i.id }}')]['time'] = $(this).text()
+            for (var i = 0; i < experiences.length; i++) {
+              if (Number(experiences[i].id) === Number('{{ i.id }}')) {
+                experiences[i].time = $(this).text()
+              }
+            }
           })
           $('#experience_description_{{ i.id }}').on('keypress focusout', function (ev) {
-            experiences[Number('{{ i.id }}')]['description'] = $(this).text()
+            for (var i = 0; i < experiences.length; i++) {
+              if (Number(experiences[i].id) === Number('{{ i.id }}')) {
+                experiences[i].description = $(this).text()
+              }
+            }
           })
         </script>
-        
       {% endif %}
     {% endfor %}
   </div>
