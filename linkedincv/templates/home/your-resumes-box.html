@@ -28,44 +28,43 @@
       </div>
       <div class="modal-body" style="text-align: center;">
         <div class="form-group">
-          <h4 for="existing_data"><strong>From the latest LinkedIn extraction</strong></h4>
+          <h4 for="existing_data"><strong>From the latest LinkedIn import</strong></h4>
           {% if exists_profile == True %}
             <h5><strong>Last update:</strong> {{ last_modified }}</h5>
-            <a href="/loading_bridge?to=new_cv?existing_data=true" id="existing_data" class="btn btn-success btn-lg">Retrieve the most recent extraction</a>
+            <a href="/loading_bridge?to=new_cv?existing_data=true" id="existing_data" class="btn btn-success btn-lg">Retrieve the most recent import</a>
           {% else %}
-            <h5><strong>Last update:</strong> No extraction located</h5>
-            <button id="existing_data" class="btn btn-success btn-lg" disabled>Retrieve the most recent extraction</button>
+            <h5><strong>Last update:</strong> No import located</h5>
+            <button id="existing_data" class="btn btn-success btn-lg" disabled>Retrieve the most recent import</button>
           {% endif %}
         </div>
         <hr />
         <div class="form-group" style="margin-top: 10px;">
-          <h4 for="not_existing_data"><strong>Fresh LinkedIn Extraction</strong></h4>
+          <h4 for="not_existing_data"><strong>Fresh LinkedIn import</strong></h4>
 
           {% if cookie_exists == False %}
             <h5><strong>NOTE:</strong> To extract data from LinkedIn, you must first establish a connection</h5>
             <button id="not_existing_data" class="btn btn-page btn-lg" disabled>
-              Fresh data extraction from LinkedIn<svg xmlns="http://www.w3.org/2000/svg" color="orange" width="20" height="20" style="margin-bottom: 4px;margin-left: 5px;" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+              Fresh data import from LinkedIn<svg xmlns="http://www.w3.org/2000/svg" color="orange" width="20" height="20" style="margin-bottom: 4px;margin-left: 5px;" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
                 <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z" />
                 <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z" />
               </svg>
             </button>
           {% else %}
             <h5><strong>Estimated time:</strong> 2 to 3 minutes</h5>
-            <a href="/loading_bridge?to=new_cv?existing_data=false" id="not_existing_data" class="btn btn-page btn-lg">Fresh data extraction from LinkedIn</a>
+            <a href="/loading_bridge?to=new_cv?existing_data=false" id="not_existing_data" class="btn btn-page btn-lg">Fresh data import from LinkedIn</a>
           {% endif %}
         </div>
 
         <hr />
 
         <div class="form-group" style="margin-top: 10px;">
-          <h4 for="not_existing_data"><strong>From your saved and edited extractions</strong></h4>
-          
+          <h4 for="not_existing_data"><strong>From your saved and edited imports</strong></h4>
+
           {% if exported_cv_not_exists == True %}
             <div class="alert alert-dark" role="alert">
-              <h5 class="alert-heading"><strong>No saved extractions found!</strong></h5>
+              <h5 class="alert-heading"><strong>No saved imports found!</strong></h5>
             </div>
           {% else %}
-   
             <div class="card" style="
             width: 25rem;
             margin: 0 auto;
@@ -75,13 +74,12 @@
             ">
               <ul class="list-group list-group-flush">
                 {% for i in exported_cv %}
-                  <a href="/cv/template/{{ i.uuid }}" class="btn btn-light"><li class="list-group-item">{{ i.name }}</li></a>
+                  <a href="/loading_bridge?to=new_cv?uuid={{ i.uuid }}" class="btn btn-light"><li class="list-group-item">{{ i.name }}</li></a>
                 {% endfor %}
               </ul>
             </div>
-    
           {% endif %}
-          <h5><strong>Note:</strong> This will directly proceed to the configuration template section</h5>
+          <br />
         </div>
       </div>
     </div>

@@ -27,19 +27,52 @@ def loading_bridge(request):
 @login_required(login_url='/auth/signin')
 def new_extraction(request):
     existing_data = request.GET.get('existing_data')
+    from_uuid = request.GET.get('uuid')
+    editor = False
 
-    if existing_data == 'false':
-        cookie = check_if_cookie(request.user)
-        if cookie == None:
+    if from_uuid and len(from_uuid) == 0:
+        from_uuid = None
+
+    if not from_uuid:
+        if existing_data == 'false':
+            cookie = check_if_cookie(request.user)
+            if cookie == None:
+                return redirect('/')
+
+        try:
+            user = UserProfileHtml.objects.get(user=request.user)
+        except UserProfileHtml.DoesNotExist:
             return redirect('/')
 
-    try:
-        user = UserProfileHtml.objects.get(user=request.user)
-    except UserProfileHtml.DoesNotExist:
-        return redirect('/')
+        return render(request, 'generate_cv/home.html', {'data': user.data,
+                                                         'export_date': datetime.now(),
+                                                         'editor': editor,
+                                                         'uuid': None
+                                                         })
 
-    data = user.data
-    return render(request, 'generate_cv/home.html', {'data': data, 'export_date': datetime.now()})
+    try:
+        data = ExportedCv.objects.get(user=request.user, id=from_uuid)
+        editor = True
+        return render(request, 'generate_cv/home.html', {'data': {
+            'name': data.basic_information['name'],
+            'title': data.basic_information['title'],
+            'description': data.basic_information['description'],
+            'location': data.basic_information['location'],
+            'web_page': data.basic_information['web_page'],
+            'email': data.basic_information['email'],
+            'education': data.education,
+            'experiences': data.experiences,
+            'projects': data.projects,
+            'licences': data.licenses,
+            'phone_number': data.basic_information['phone_number']
+        },
+            'export_date': datetime.now(),
+            'editing': data.name,
+            'editor': editor,
+            'uuid': data.id.hex
+        })
+    except:
+        return redirect('/')
 
 
 @login_required(login_url='/auth/signin')

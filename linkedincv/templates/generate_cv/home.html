@@ -232,13 +232,22 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="export-cv-modalLabel">Assign a name to your export</h5>
+          {% if editor != True %}
+            <h5 class="modal-title" id="export-cv-modalLabel">Assign a name to your export</h5>
+          {% else %}
+            <h5 class="modal-title" id="export-cv-modalLabel">Modifying...</h5>
+          {% endif %}
         </div>
         <div class="modal-body">
           <div id="export-message" style="display: none;" class="alert alert-warning" role="alert"></div>
           <div class="form-group">
-            <label for="export-name">Export Name</label>
-            <input type="text" class="form-control" id="export-name" value="{{ data.name }} - {{ export_date }}" />
+            {% if editor != True %}
+              <label for="export-name">Export Name</label>
+              <input type="text" class="form-control" id="export-name" value="{{ data.name }} - {{ export_date }}" />
+            {% else %}
+              <label for="export-name">Editing Export</label>
+              <input type="text" class="form-control" id="export-name" value="{{ editing }}"/>
+            {% endif %}
           </div>
         </div>
         <div class="modal-footer">
@@ -293,7 +302,9 @@
                     'licenses': licenses,
                     'projects': projects,
                     'hide_basic_information_items': hide_basic_information_items,
-                    'name': $('#export-name').val()
+                    'name': $('#export-name').val(),
+                    'editor': '{{editor}}',
+                    'uuid': '{{uuid}}'
                 })
             }).then(resp => resp.json()).then(success => handle_export(success));
             })
