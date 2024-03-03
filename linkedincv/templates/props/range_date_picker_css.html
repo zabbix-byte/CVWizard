@@ -1,7 +1,18 @@
 <script>
-    $(document).ready(function(){
-        $('.input-daterange input').each(function() {
-            $(this).datepicker('clearDates');
-        });
-    });
+  $(document).ready(function () {
+    $('.input-daterange .input-range').each(function () {
+      $(this).datepicker({
+        format: 'M yyyy',
+        startView: 'months',
+        minViewMode: 'months'
+      })
+    })
+  })
 </script>
+
+<style>
+  .input-range {
+    border: 0px solid red;
+    width: 85px;
+  }
+</style>
