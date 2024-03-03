@@ -18,7 +18,7 @@
         <div class="card-header" id="education_time_new_education">
           <div class="input-group input-daterange">
             <input type="text" id="start_date_new_education" placeholder="Start Date" class="input-range" />-<input type="text" id="end_date_new_education" placeholder="End Date" class="input-range" />
-            <input style="margin-left: 1px;height: 18px;width: 18px;border-radius: 1px;margin-bottom: 0px;" type="checkbox" class="form-check-input" id="end_date_on_new_education" />
+            <input style="margin-left: 4px;height: 18px;width: 18px;border-radius: 1px;margin-bottom: 0px;" type="checkbox" class="form-check-input" id="end_date_on_new_education" />
           </div>
         </div>
         <div class="card-body text-dark">
@@ -50,9 +50,16 @@
     {% for i in data.education %}
       <div style="margin-top: 10px;" id="education_index_{{ i.id }}" class="input-group">
         <div class="card border-dark mb-3" style="width: 70%;margin-bottom: 5px !important">
-          <div class="card-header" id="education_time_{{ i.id }}" contenteditable="true">{{ i.time }}</div>
+          <div class="card-header" id="education_time_{{ i.id }}">
+            <div class="input-group input-daterange">
+              <input type="text" id="start_date_{{ i.id }}_education" value="{{ i.time_start }}" placeholder="Start Date" class="input-range" />-<input value="{{ i.time_end }}" type="text" id="end_date_{{ i.id }}_education" placeholder="End Date" class="input-range" />
+              <input style="margin-left: 4px;height: 18px;width: 18px;border-radius: 1px;margin-bottom: 0px;" type="checkbox" class="form-check-input" id="end_date_on_{{ i.id }}_education" />
+            </div>
+          </div>
           <div class="card-body text-dark">
+            <label for="education_time_new_education"><strong>Academic Title</strong></label>
             <h5 class="card-title" id="entity_{{ i.id }}" contenteditable="true">{{ i.entity }}</h5>
+            <label for="education_time_new_education"><strong>Academic Institution</strong></label>
             <p class="card-text" id="name_{{ i.id }}" contenteditable="true">{{ i.name }}</p>
           </div>
         </div>
@@ -60,10 +67,36 @@
           <button class="btn btn-page hide_button" onClick="removeEducation('{{ i.id }}')" style="height: 97%;width: 90px;" type="button">Remove</button>
         </div>
         <script>
-          $('#education_time_{{ i.id }}').on('keypress focusout', function (ev) {
+          $('#end_date_on_{{ i.id }}_education').change(function () {
+            if (this.checked) {
+              $('#end_date_{{ i.id }}_education').attr('placeholder', 'Now')
+              $('#end_date_{{ i.id }}_education').prop('disabled', true)
+              $('#end_date_{{ i.id }}_education').val('Now')
+              for (var i = 0; i < education.length; i++) {
+                if (Number(education[i].id) === Number('{{ i.id }}')) {
+                  education[i].time_end = 'Now'
+                }
+              }
+            } else {
+              $('#end_date_{{ i.id }}_education').attr('placeholder', 'End Date')
+              $('#end_date_{{ i.id }}_education').prop('disabled', false)
+              $('#end_date_{{ i.id }}_education').val('')
+            }
+          })
+        </script>
+
+        <script>
+          $('#start_date_{{ i.id }}_education').on('keypress focusout', function (ev) {
             for (var i = 0; i < education.length; i++) {
               if (Number(education[i].id) === Number('{{ i.id }}')) {
-                education[i].time = $(this).text()
+                education[i].time_start = $(this).val()
+              }
+            }
+          })
+          $('#end_date_{{ i.id }}_education').on('keypress focusout', function (ev) {
+            for (var i = 0; i < education.length; i++) {
+              if (Number(education[i].id) === Number('{{ i.id }}')) {
+                education[i].time_end = $(this).val()
               }
             }
           })

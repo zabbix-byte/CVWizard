@@ -249,7 +249,10 @@ class Linkedin:
             except:
                 time = ''
 
-            profile.education.append(Education(name=name, entity=entity, time=time, id=id))
+            current_education = Education(name=name, entity=entity, id=id)
+            current_education.set_time(time)
+
+            profile.education.append(current_education)
             id += 1
         return profile
 
