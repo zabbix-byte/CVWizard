@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 import time
 import copy
 import re
@@ -282,6 +283,16 @@ class Linkedin:
         return profile
 
     @staticmethod
+    def select_lenguage(driver, lenguage_to_pick: str = 'en_US'):
+        select = Select(driver.find_element(By.ID, 'globalfooter-select_language'))
+        select.select_by_value(lenguage_to_pick)
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
+        )
+
+        return lenguage_to_pick
+
+    @staticmethod
     def get_profile_data(cookie: str, user: User, only_check: bool = False, just_li: bool = False) -> bool:
         service = Service(executable_path=r'/usr/local/bin/chromedriver')
         options = webdriver.ChromeOptions()
@@ -321,15 +332,15 @@ class Linkedin:
         if just_li:
             return True
 
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.TAG_NAME, "body"))
-        )
-
         if '404' in driver.current_url:
             return False, "By the four Founders! No user hath been unearthed with this username from the depths of our magical archives!"
 
         if only_check:
             return True
+
+        Linkedin.scroll(driver)
+
+        print(f'[Extracting] Selection lenguage {Linkedin.select_lenguage(driver)}')
 
         profile = Linkedin.get_general_info(driver.page_source)
 
