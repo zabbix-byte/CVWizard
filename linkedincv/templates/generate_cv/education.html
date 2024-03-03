@@ -13,9 +13,47 @@
 </div>
 <div class="main-content">
   <div style="row" style="margin-top: 50px;">
+    <div id="education_index_new_education" class="input-group">
+      <div class="card border-dark mb-3" style="width: 80%;margin-bottom: 5px !important">
+        <div class="card-header" id="education_time_new_education">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="end_date_on_new_education" />
+            <label class="form-check-label" for="end_date_on_new_education">I am presently engaged in this</label>
+          </div>
+          <div class="input-group input-daterange">
+            <input type="text" class="form-control" id="start_date_new_education" placeholder="Start Date" />
+            <input type="text" class="form-control" id="end_date_new_education" placeholder="End Date" />
+          </div>
+        </div>
+        <div class="card-body text-dark">
+          <label for="education_time_new_education">Academic Title</label>
+          <h5 class="card-title border" id="entity_new_education" contenteditable="true"></h5>
+          <label for="education_time_new_education">Academic Institution</label>
+          <p class="card-text border" id="name_new_education" contenteditable="true"></p>
+        </div>
+      </div>
+      <div class="input-group-append">
+        <button class="btn btn-success hide_button" onClick="" style="height: 97%;width: 90px;" type="button">Create</button>
+      </div>
+
+      <script>
+        $('#end_date_on_new_education').change(function () {
+          if (this.checked) {
+            $('#end_date_new_education').attr('placeholder', 'Now')
+            $('#end_date_new_education').prop('disabled', true)
+            $('#end_date_new_education').val('Now')
+          } else {
+            $('#end_date_new_education').attr('placeholder', 'End Date')
+            $('#end_date_new_education').prop('disabled', false)
+            $('#end_date_new_education').val('')
+          }
+        })
+      </script>
+    </div>
+
     {% for i in data.education %}
       <div id="education_index_{{ i.id }}" class="input-group">
-        <div class="card border-dark mb-3" style="max-width: 80%;margin-bottom: 5px !important">
+        <div class="card border-dark mb-3" style="width: 80%;margin-bottom: 5px !important">
           <div class="card-header" id="education_time_{{ i.id }}" contenteditable="true">{{ i.time }}</div>
           <div class="card-body text-dark">
             <h5 class="card-title" id="entity_{{ i.id }}" contenteditable="true">{{ i.entity }}</h5>
@@ -23,7 +61,7 @@
           </div>
         </div>
         <div class="input-group-append">
-          <button class="btn btn-page hide_button" onClick="removeEducation('{{ i.id }}')" style="height: 97%;" type="button">Remove</button>
+          <button class="btn btn-page hide_button" onClick="removeEducation('{{ i.id }}')" style="height: 97%;width: 90px;" type="button">Remove</button>
         </div>
         <script>
           $('#education_time_{{ i.id }}').on('keypress focusout', function (ev) {
